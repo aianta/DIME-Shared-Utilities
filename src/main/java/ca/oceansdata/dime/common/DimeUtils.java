@@ -1,3 +1,4 @@
+package ca.oceansdata.dime.common;
 
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.reactivex.core.eventbus.Message;
