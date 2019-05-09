@@ -1,6 +1,7 @@
 package ca.oceansdata.dime.common;
 
 import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.Message;
 
 import java.time.Instant;
@@ -35,6 +36,53 @@ public class DimeUtils {
         opt.addHeader("timestamp", Date.from(Instant.now()).toString());
 
         return opt;
+    }
+
+    /**
+     * @Author Alexandru Ianta
+     * Returns all headers of the message as a json object
+     * @param msg message to extract meta data from
+     * @return a json object containing all headers of the message
+     */
+    public static JsonObject extractHeaders(Message msg){
+        JsonObject result =  new JsonObject();
+
+        for (Map.Entry<String, String> entry: msg.headers().entries()){
+            if(entry.getKey().equals("responseHeaders") || entry.getKey().equals("requestHeaders") || entry.getKey().equals("queryParams")){
+                result.put(entry.getKey(), new JsonObject(entry.getValue()));
+            }else{
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return result;
+    }
+
+    /** Returns the query parameters sent with the http request associated with the message.
+     * @Author Alexandru Ianta
+     * @param msg message to extract query params from.
+     * @return a Json Object containing the query parameters if they exist, empty otherwise.
+     */
+    public JsonObject extractQueryParams(Message msg){
+        if(msg.headers().contains("queryParams")){
+            return new JsonObject(msg.headers().get("queryParams"));
+        }else{
+            return new JsonObject();
+        }
+    }
+
+    /**Returns the http headers of the http request associated with the message.
+     *
+     * @Author Alexandru Ianta
+     * @param msg message to extract request headers from.
+     * @return a Json Object containing the http headers of the http request associated with this message if they exist, empty otherwise.
+     */
+    public JsonObject extractRequestHeaders(Message msg){
+        if(msg.headers().contains("requestHeaders")){
+            return new JsonObject(msg.headers().get("requestHeaders"));
+        }else{
+            return new JsonObject();
+        }
     }
 
 }
