@@ -63,7 +63,7 @@ public class DimeUtils {
      * @param msg message to extract query params from.
      * @return a Json Object containing the query parameters if they exist, empty otherwise.
      */
-    public JsonObject extractQueryParams(Message msg){
+    public static JsonObject extractQueryParams(Message msg){
         if(msg.headers().contains("queryParams")){
             return new JsonObject(msg.headers().get("queryParams"));
         }else{
@@ -77,7 +77,7 @@ public class DimeUtils {
      * @param msg message to extract request headers from.
      * @return a Json Object containing the http headers of the http request associated with this message if they exist, empty otherwise.
      */
-    public JsonObject extractRequestHeaders(Message msg){
+    public static JsonObject extractRequestHeaders(Message msg){
         if(msg.headers().contains("requestHeaders")){
             return new JsonObject(msg.headers().get("requestHeaders"));
         }else{
