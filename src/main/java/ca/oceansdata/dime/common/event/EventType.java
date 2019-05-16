@@ -1,6 +1,7 @@
 package ca.oceansdata.dime.common.event;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public enum EventType {
@@ -20,7 +21,7 @@ public enum EventType {
     EDIT_SCHEMA_NAME("Edit Dataset Name"),
     EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description");
 
-    public static Map<String,EventType> typeMap = Collections.emptyMap();
+    public static Map<String,EventType> typeMap = new HashMap<>();
     static {
         typeMap.put(LOGIN.getText(), LOGIN);
         typeMap.put(LOGOUT.getText(), LOGOUT);
