@@ -18,7 +18,7 @@ public class EventService {
                 .put("target", target)
                 .put("data", data);
 
-        eb.send("dime.events", emission);
+        eb.publish("dime.events", emission);
 
     }
 
