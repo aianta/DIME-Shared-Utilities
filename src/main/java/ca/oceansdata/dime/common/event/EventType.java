@@ -21,8 +21,9 @@ public enum EventType {
     EDIT_SCHEMA_NAME("Edit Dataset Name"),
     EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description");
 
-    public static Map<String,EventType> typeMap = new HashMap<>();
+    public static Map<String,EventType> typeMap;
     static {
+        typeMap = new HashMap<>();
         typeMap.put(LOGIN.getText(), LOGIN);
         typeMap.put(LOGOUT.getText(), LOGOUT);
         typeMap.put(DOCUMENT_UPLOAD.getText(),DOCUMENT_UPLOAD);
