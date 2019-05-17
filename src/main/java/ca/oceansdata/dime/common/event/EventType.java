@@ -8,8 +8,7 @@ public enum EventType {
     LOGIN("Login"),
     LOGOUT("Logout"),
     DOCUMENT_UPLOAD ("Document Upload"),
-    MANUAL_ATTRIBUTE_MATCH ("Manual Attribute Match"),
-    MANUAL_ATTRIBUTE_MATCH_EDIT ("Manual Attribute Match Edit"),
+    ATTRIBUTE_MAPPING("Attribute Mapping"),
     DOWNLOAD_INTEGRATED_FILE ("Download Integrated File"),
     DOWNLOAD_ORIGINAL_FILE ("Download Original File"),
     COMMUNITY_TASK_MATCH ("Community Task Match"),
@@ -27,8 +26,7 @@ public enum EventType {
         typeMap.put(LOGIN.getText(), LOGIN);
         typeMap.put(LOGOUT.getText(), LOGOUT);
         typeMap.put(DOCUMENT_UPLOAD.getText(),DOCUMENT_UPLOAD);
-        typeMap.put(MANUAL_ATTRIBUTE_MATCH.getText(),MANUAL_ATTRIBUTE_MATCH);
-        typeMap.put(MANUAL_ATTRIBUTE_MATCH_EDIT.getText(), MANUAL_ATTRIBUTE_MATCH_EDIT);
+        typeMap.put(ATTRIBUTE_MAPPING.getText(),ATTRIBUTE_MAPPING);
         typeMap.put(DOWNLOAD_INTEGRATED_FILE.getText(), DOWNLOAD_INTEGRATED_FILE);
         typeMap.put(DOWNLOAD_ORIGINAL_FILE.getText(), DOWNLOAD_ORIGINAL_FILE);
         typeMap.put(COMMUNITY_TASK_MATCH.getText(), COMMUNITY_TASK_MATCH);
