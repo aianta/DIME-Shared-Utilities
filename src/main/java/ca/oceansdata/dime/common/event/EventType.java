@@ -11,6 +11,7 @@ public enum EventType {
     ATTRIBUTE_MAPPING("Attribute Mapping"),
     DOWNLOAD_INTEGRATED_FILE ("Download Integrated File"),
     DOWNLOAD_ORIGINAL_FILE ("Download Original File"),
+    COMMUNITY_TASK_CREATED ("Community Task Created"),
     COMMUNITY_TASK_MATCH ("Community Task Match"),
     COMMUNITY_TASK_SKIP ("Community Task Skip"),
     COMMUNITY_TASK_FEEDBACK ("Community Task Feedback"),
@@ -37,6 +38,7 @@ public enum EventType {
         typeMap.put(DOWNLOAD_DIME_TOOLS_FOR_WINDOWS.getText(), DOWNLOAD_DIME_TOOLS_FOR_WINDOWS);
         typeMap.put(EDIT_SCHEMA_NAME.getText(), EDIT_SCHEMA_NAME);
         typeMap.put(EDIT_SCHEMA_DESCRIPTION.getText(), EDIT_SCHEMA_DESCRIPTION);
+        typeMap.put(COMMUNITY_TASK_CREATED.getText(),COMMUNITY_TASK_CREATED);
     }
 
     private String text;
