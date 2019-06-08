@@ -7,8 +7,27 @@ import io.vertx.reactivex.core.eventbus.Message;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 public class DimeUtils {
+
+    /**Build event bus message headers for internal communication between services
+     * @Author Alexandru Ianta
+     * @param orcid orcid to bind to the message
+     * @param action action to bind to the message
+     * @return Delivery options with event bus message headers
+     */
+    public static DeliveryOptions buildHeaders(String orcid, String action){
+        DeliveryOptions opts = new DeliveryOptions();
+
+        opts.addHeader("action", action);
+        opts.addHeader("correlationId", UUID.randomUUID().toString());
+        opts.addHeader("timestamp", Date.from(Instant.now()).toString());
+        opts.addHeader("orcid", orcid);
+        opts.addHeader("queryParams", "{}");
+
+        return opts;
+    }
 
     /** Builds event bus message headers with specified action value
      *  from a given event bus message.
