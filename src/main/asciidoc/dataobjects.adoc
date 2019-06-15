@@ -1,0 +1,250 @@
+= Cheatsheets
+
+[[AttributeMappingEvent]]
+== AttributeMappingEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[definition]]`@definition`|`String`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[source]]`@source`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[CommunityMatchResultEvent]]
+== CommunityMatchResultEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[definition]]`@definition`|`String`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[source]]`@source`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|[[url]]`@url`|`String`|-
+|===
+
+[[CommunityTaskCreatedEvent]]
+== CommunityTaskCreatedEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[originDocument]]`@originDocument`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[CommunityTaskFeedbackEvent]]
+== CommunityTaskFeedbackEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[feedback]]`@feedback`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[CommunityTaskMatchEvent]]
+== CommunityTaskMatchEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[definition]]`@definition`|`String`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[source]]`@source`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[CommunityTaskSkipEvent]]
+== CommunityTaskSkipEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[attribute]]`@attribute`|`String`|-
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[DocumentUploadEvent]]
+== DocumentUploadEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[documentId]]`@documentId`|`String`|-
+|[[documentName]]`@documentName`|`String`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[DownloadDimeToolsForWindowsEvent]]
+== DownloadDimeToolsForWindowsEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[DownloadIntegratedFileEvent]]
+== DownloadIntegratedFileEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[DownloadOriginalFileEvent]]
+== DownloadOriginalFileEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[EditSchemaDescriptionEvent]]
+== EditSchemaDescriptionEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[newDescription]]`@newDescription`|`String`|-
+|[[oldDescription]]`@oldDescription`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[EditSchemaNameEvent]]
+== EditSchemaNameEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[newName]]`@newName`|`String`|-
+|[[oldName]]`@oldName`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[Event]]
+== Event
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[LoginEvent]]
+== LoginEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[LogoutEvent]]
+== LogoutEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+
+[[ProfileFieldUpdateEvent]]
+== ProfileFieldUpdateEvent
+
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[data]]`@data`|`Json object`|-
+|[[eventTarget]]`@eventTarget`|`String`|-
+|[[fieldName]]`@fieldName`|`String`|-
+|[[newValue]]`@newValue`|`String`|-
+|[[oldValue]]`@oldValue`|`String`|-
+|[[status]]`@status`|`link:enums.html#EventStatus[EventStatus]`|-
+|[[type]]`@type`|`link:enums.html#EventType[EventType]`|-
+|===
+

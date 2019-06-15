@@ -6,13 +6,41 @@ plugins {
 group 'com.github.aianta'
 version '0.0.1'
 
-sourceCompatibility = 1.8
+
 
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
 
 }
+
+sourceSets{
+    main{
+        java{
+            srcDirs += 'src/main/java'
+            srcDirs += 'src/main/generated'
+        }
+    }
+}
+
+task annotationProcessing(type: JavaCompile, group: 'build') { // codegen
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.compileOnly
+    destinationDir = project.file('src/main/generated')
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "io.vertx.codegen.CodeGenProcessor",
+            "-Acodegen.output=${project.projectDir}/src/main"
+    ]
+}
+
+compileJava{
+    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    dependsOn annotationProcessing
+}
+
+
 
 ext{
     slf4j_version = '1.7.25'
