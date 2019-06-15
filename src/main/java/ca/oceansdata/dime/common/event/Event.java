@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 
@@ -28,7 +29,7 @@ public class Event {
     private Date readTimestamp;
     protected JsonObject data = new JsonObject();
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("E M d hh:mm:ss zzz yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us"));
 
     /**
      * No-Args constructor
