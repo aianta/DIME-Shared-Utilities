@@ -73,5 +73,5 @@ public class DocumentUploadEvent extends Event {
         this.documentId = documentId;
         data.mergeIn(new JsonObject().put("documentId", documentId));
     }
-    
+
 }
