@@ -1,5 +1,6 @@
 package ca.oceansdata.dime.common.event;
 
+import ca.oceansdata.dime.common.event.types.*;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.json.JsonObject;
@@ -148,6 +149,49 @@ public class Event {
 
         JsonObject json = new JsonObject(data.getString("DATA"));
         event.setData(json);
+
+        try{
+
+            switch (event.getType()){
+                case LOGIN:
+                    return new LoginEvent(event.toJson());
+                case LOGOUT:
+                    return new LogoutEvent(event.toJson());
+                case DOCUMENT_UPLOAD:
+                    return new DocumentUploadEvent(event.toJson());
+                case ATTRIBUTE_MAPPING:
+                    return new AttributeMappingEvent(event.toJson());
+                case DOWNLOAD_INTEGRATED_FILE:
+                    return new DownloadIntegratedFileEvent(event.toJson());
+                case DOWNLOAD_ORIGINAL_FILE:
+                    return new DownloadOriginalFileEvent(event.toJson());
+                case COMMUNITY_TASK_CREATED:
+                    return new CommunityTaskCreatedEvent(event.toJson());
+                case COMMUNITY_TASK_MATCH:
+                    return new CommunityTaskMatchEvent(event.toJson());
+                case COMMUNITY_TASK_SKIP:
+                    return new CommunityTaskSkipEvent(event.toJson());
+                case COMMUNITY_TASK_FEEDBACK:
+                    return new CommunityTaskFeedbackEvent(event.toJson());
+                case COMMUNITY_MATCH_RESULT:
+                    return new CommunityMatchResultEvent(event.toJson());
+                case PROFILE_FIELD_UPDATE:
+                    return new ProfileFieldUpdateEvent(event.toJson());
+                case DOWNLOAD_DIME_TOOLS_FOR_WINDOWS:
+                    return new DownloadDimeToolsForWindowsEvent(event.toJson());
+                case EDIT_SCHEMA_NAME:
+                    return new EditSchemaNameEvent(event.toJson());
+                case EDIT_SCHEMA_DESCRIPTION:
+                    return new EditSchemaDescriptionEvent(event.toJson());
+                default:
+                    log.error("No such event.");
+            }
+
+        }catch (IllegalEventFormatException iefe){
+            log.error("Error prasing event from database");
+            log.error(iefe.getMessage());
+            iefe.printStackTrace();
+        }
 
         return event;
     }
