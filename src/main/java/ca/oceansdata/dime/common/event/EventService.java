@@ -18,17 +18,6 @@ public class EventService {
         this.eb = eb;
     }
 
-    public void emit(EventType type, String target, JsonObject data){
-
-        JsonObject emission = new JsonObject()
-                .put("type", type.getText())
-                .put("target", target)
-                .put("data", data);
-
-        eb.publish("dime.events", emission);
-
-    }
-
     public void emit(Event e){
         try{
             if(e.getEventTarget() == null){
