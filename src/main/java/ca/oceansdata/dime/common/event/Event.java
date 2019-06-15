@@ -28,7 +28,7 @@ public class Event {
     private Date readTimestamp;
     protected JsonObject data = new JsonObject();
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dow mon dd hh:mm:ss zzz yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("E M d hh:mm:ss zzz yyyy");
 
     /**
      * No-Args constructor
