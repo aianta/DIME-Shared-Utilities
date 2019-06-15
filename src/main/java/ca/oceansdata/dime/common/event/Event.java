@@ -23,7 +23,7 @@ public class Event {
     private Date timestamp;
     private String eventTarget; //ORCID of the user who should see this event
     private EventType type;
-    private EventStatus status;
+    private EventStatus status = EventStatus.UNREAD;
     private Date readTimestamp;
     protected JsonObject data = new JsonObject();
 
