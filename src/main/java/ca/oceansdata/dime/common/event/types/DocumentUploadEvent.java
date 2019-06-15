@@ -11,24 +11,20 @@ public class DocumentUploadEvent extends Event {
 
     String documentName;
     String documentId;
-    String documentSize;
 
     /** Convenience constructor
      * @param documentId Id of the uploaded document
      * @param documentName Name of the uploaded document
-     * @param documentSize Size of the uploaded document
      */
-    public DocumentUploadEvent(String documentId, String documentName, String documentSize){
+    public DocumentUploadEvent(String documentId, String documentName){
         super(EventType.DOCUMENT_UPLOAD);
 
         this.documentName = documentName;
         this.documentId = documentId;
-        this.documentSize = documentSize;
 
         JsonObject data = new JsonObject()
                 .put("documentId", documentId)
-                .put("documentName", documentName)
-                .put("documentSize", documentSize);
+                .put("documentName", documentName);
 
         this.setData(data);
 
@@ -58,12 +54,6 @@ public class DocumentUploadEvent extends Event {
         }
 
         this.documentId = inner.getString("documentId");
-
-        if(!inner.containsKey("documentSize")){
-            throw new IllegalEventFormatException(data, "data->documentSize", "missing key");
-        }
-
-        this.documentSize = inner.getString("documentSize");
     }
 
     public String getDocumentName() {
@@ -83,13 +73,5 @@ public class DocumentUploadEvent extends Event {
         this.documentId = documentId;
         data.mergeIn(new JsonObject().put("documentId", documentId));
     }
-
-    public String getDocumentSize() {
-        return documentSize;
-    }
-
-    public void setDocumentSize(String documentSize) {
-        this.documentSize = documentSize;
-        data.mergeIn(new JsonObject().put("documentSize", documentSize));
-    }
+    
 }

@@ -1,6 +1,7 @@
 package ca.oceansdata.dime.common.event;
 
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.ext.sql.SQLConnection;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
+
 
 @DataObject
 public class Event {
