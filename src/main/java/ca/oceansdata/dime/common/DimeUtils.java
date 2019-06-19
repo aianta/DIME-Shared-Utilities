@@ -1,5 +1,9 @@
 package ca.oceansdata.dime.common;
 
+import io.jaegertracing.Configuration;
+import io.jaegertracing.Configuration.SamplerConfiguration;
+import io.jaegertracing.Configuration.ReporterConfiguration;
+import io.jaegertracing.internal.JaegerTracer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.Message;
@@ -10,6 +14,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DimeUtils {
+
+    public static JaegerTracer getTracer(String operationName){
+        SamplerConfiguration samplerConfig = SamplerConfiguration.fromEnv().withType("const").withParam(1);
+        ReporterConfiguration reporterConfig = ReporterConfiguration.fromEnv().withLogSpans(true);
+        Configuration config = new Configuration(operationName).withSampler(samplerConfig).withReporter(reporterConfig);
+        return config.getTracer();
+    }
 
     /**Build event bus message headers for internal communication between services
      * @Author Alexandru Ianta

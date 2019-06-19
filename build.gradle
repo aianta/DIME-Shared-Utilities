@@ -28,6 +28,10 @@ dependencies {
 
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxJava_version
 
+    // https://mvnrepository.com/artifact/io.jaegertracing/jaeger-client
+    compile group: 'io.jaegertracing', name: 'jaeger-client', version: '0.35.5'
+
+
     compile group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
     compile group: 'org.slf4j', name: 'slf4j-simple', version: slf4j_version
 
