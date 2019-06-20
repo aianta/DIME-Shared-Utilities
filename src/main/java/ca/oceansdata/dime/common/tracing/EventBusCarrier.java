@@ -15,6 +15,13 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
 
     private final DeliveryOptions opts;
 
+    public EventBusCarrier(){
+        opts = new DeliveryOptions();
+        opts.addHeader("correlationId", UUID.randomUUID().toString());
+        opts.addHeader("timestamp", Date.from(Instant.now()).toString());
+        opts.addHeader("queryParams", "{}");
+    }
+
     public EventBusCarrier(String orcid, String action){
         opts = new DeliveryOptions();
         opts.addHeader("action", action);
