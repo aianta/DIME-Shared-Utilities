@@ -2,6 +2,7 @@ package ca.oceansdata.dime.common.tracing;
 
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -49,5 +50,15 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
     public void put(String key, String value) {
 
         opts.addHeader(key, value);
+    }
+
+    public void bindJson(String name, JsonObject obj){
+
+        //Clear any existing value first
+        if(opts.getHeaders().contains(name)){
+            opts.getHeaders().remove(name);
+        }
+
+        opts.addHeader(name, obj.encode());
     }
 }
