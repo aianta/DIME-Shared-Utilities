@@ -9,9 +9,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.Message;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DimeUtils {
 
@@ -113,6 +111,21 @@ public class DimeUtils {
         }else{
             return new JsonObject();
         }
+    }
+
+    public static Map<String, String> extractHeaderMap(Message msg){
+
+        final Map<String,String> map = new HashMap<>();
+
+        Iterator<Map.Entry<String,String>> it = msg.headers().entries().iterator();
+
+        while (it.hasNext()){
+            Map.Entry<String,String> entry = it.next();
+            map.put(entry.getKey(), entry.getValue());
+        }
+
+        return map;
+
     }
 
 }
