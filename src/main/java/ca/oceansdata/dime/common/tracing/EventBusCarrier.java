@@ -1,8 +1,11 @@
 package ca.oceansdata.dime.common.tracing;
 
+import ca.oceansdata.dime.common.exceptions.MissingActionException;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -13,6 +16,7 @@ import java.util.UUID;
 
 public class EventBusCarrier implements io.opentracing.propagation.TextMap {
 
+    private static final Logger log = LoggerFactory.getLogger(EventBusCarrier.class);
     private final DeliveryOptions opts;
 
     public EventBusCarrier(){
@@ -67,5 +71,24 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
         }
 
         opts.addHeader(name, obj.encode());
+    }
+
+    public DeliveryOptions getOptions(){
+        try{
+            if(!opts.getHeaders().contains("orcid")){
+                log.info("No ORCID in delivery options.");
+            }
+
+            if(!opts.getHeaders().contains("action")){
+                throw new MissingActionException();
+            }
+
+        }catch (MissingActionException mae){
+            log.error(mae.toString());
+            mae.printStackTrace();
+        }
+
+        return opts;
+
     }
 }
