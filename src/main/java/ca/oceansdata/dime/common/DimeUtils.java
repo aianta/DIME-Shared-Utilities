@@ -89,6 +89,7 @@ public class DimeUtils {
      * @param action action to associate with new headers
      * @return Delivery options with event bus message headers
      */
+    @Deprecated
     public static DeliveryOptions buildHeaders(Message msg, String action){
 
         DeliveryOptions opt = new DeliveryOptions();
