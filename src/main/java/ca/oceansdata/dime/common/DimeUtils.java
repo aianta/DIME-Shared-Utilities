@@ -57,7 +57,7 @@ public class DimeUtils {
      * @return the jager tracer for the specified operation.
      */
     public static JaegerTracer getTracer(String operationName){
-        SamplerConfiguration samplerConfig = SamplerConfiguration.fromEnv().withType("const").withParam(1);
+        SamplerConfiguration samplerConfig = SamplerConfiguration.fromEnv().withType("ratelimit").withParam(2.0);
         ReporterConfiguration reporterConfig = ReporterConfiguration.fromEnv().withLogSpans(true);
         Configuration config = new Configuration(operationName).withSampler(samplerConfig).withReporter(reporterConfig);
         return config.getTracer();
