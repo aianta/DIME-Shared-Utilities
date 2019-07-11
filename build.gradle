@@ -25,6 +25,7 @@ dependencies {
     compile 'io.vertx:vertx-rx-java2:3.7.1'
     compile "io.vertx:vertx-codegen:3.7.1:processor"
     compile 'io.vertx:vertx-sql-common:3.7.1'
+    compile "io.vertx:vertx-config:3.7.1"
 
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: rxJava_version
 
