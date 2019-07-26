@@ -26,6 +26,7 @@ public class CommunityTaskFeedbackEvent extends Event {
      * @param feedback the given feedback
      */
     public CommunityTaskFeedbackEvent(UUID taskId, UUID schemaId, UUID attributeId, String attribute, String feedback){
+        super(EventType.COMMUNITY_TASK_FEEDBACK);
         this.taskId = taskId;
         this.schemaId = schemaId;
         this.attributeId = attributeId;
