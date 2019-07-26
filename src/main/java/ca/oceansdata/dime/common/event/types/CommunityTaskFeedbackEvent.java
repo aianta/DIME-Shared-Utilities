@@ -49,7 +49,7 @@ public class CommunityTaskFeedbackEvent extends Event {
     public CommunityTaskFeedbackEvent(JsonObject data) throws IllegalEventFormatException{
         super(data);
 
-        if(data.containsKey("data")){
+        if(!data.containsKey("data")){
             throw new IllegalEventFormatException(data, "data", "key missing");
         }
 
