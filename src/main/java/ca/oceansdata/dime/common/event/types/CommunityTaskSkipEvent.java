@@ -42,7 +42,7 @@ public class CommunityTaskSkipEvent extends Event {
     }
 
     public CommunityTaskSkipEvent(JsonObject data) throws IllegalEventFormatException {
-        super(EventType.COMMUNITY_TASK_SKIP);
+        super(data);
 
         if(!data.containsKey("data")){
             throw new IllegalEventFormatException(data, "data", "key missing");

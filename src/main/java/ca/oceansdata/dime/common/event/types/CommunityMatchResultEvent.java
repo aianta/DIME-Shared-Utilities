@@ -32,6 +32,7 @@ public class CommunityMatchResultEvent extends Event{
      * @param attribute Attribute that was matched
      * @param definitionId Id of the definition that the attribute was matched to
      * @param definition Definition that the attribute was matched to
+     * @param message Message associated with this task, provided by the orcid who completed the task.
      * @param source Source of the definition the attribute was matched to
      * @param url URL at which the user can inspect the community result
      */
