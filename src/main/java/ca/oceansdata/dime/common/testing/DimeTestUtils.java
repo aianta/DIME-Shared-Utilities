@@ -9,7 +9,7 @@ import io.vertx.reactivex.core.Vertx;
 public class DimeTestUtils {
 
 
-    /**Returns a config retriever for the specified json configuration file path. 
+    /**Returns a config retriever for the specified json configuration file path.
      * @Author Alexandru Ianta
      * @param vertx the vertx instance with which to create the config retriever
      * @param path the path to the configuration file (in JSON format)

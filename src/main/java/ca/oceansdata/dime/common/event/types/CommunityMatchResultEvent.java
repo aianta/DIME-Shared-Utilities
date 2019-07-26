@@ -6,11 +6,15 @@ import ca.oceansdata.dime.common.event.IllegalEventFormatException;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 @DataObject
 public class CommunityMatchResultEvent extends Event{
+
+    private static final Logger log = LoggerFactory.getLogger(CommunityMatchResultEvent.class);
 
     UUID taskId;
     UUID schemaId;
@@ -31,7 +35,7 @@ public class CommunityMatchResultEvent extends Event{
      * @param source Source of the definition the attribute was matched to
      * @param url URL at which the user can inspect the community result
      */
-    public CommunityMatchResultEvent(UUID taskId, UUID schemaId, UUID attributeId, String attribute, UUID definitionId, String definition, String source, String url){
+    public CommunityMatchResultEvent(UUID taskId, UUID schemaId, UUID attributeId, String attribute, UUID definitionId, String definition, String message, String source, String url){
         super(EventType.COMMUNITY_MATCH_RESULT);
         this.url = url;
         this.taskId = taskId;
@@ -47,10 +51,21 @@ public class CommunityMatchResultEvent extends Event{
                 .put("schemaId", schemaId.toString())
                 .put("attributeId", attributeId.toString())
                 .put("attribute", attribute)
-                .put("definitionId", definitionId.toString())
-                .put("definition", definition)
-                .put("source", definition)
+                .put("source", source)
                 .put("url", url);
+
+        if(definition != null){
+            data.put("definition", definition);
+        }
+
+        if(definitionId != null){
+            data.put("definitionId", definitionId.toString());
+        }
+
+        if(message != null && !message.isEmpty()){
+            data.put("message", message);
+        }
+
         this.setData(data);
     }
 
@@ -93,14 +108,16 @@ public class CommunityMatchResultEvent extends Event{
         this.attribute = inner.getString("attribute");
 
         if(!inner.containsKey("definitionId")){
-            throw new IllegalEventFormatException(data, "data->definitionId", "key missing");
+            log.info("definitionId missing!");
+        }else{
+            this.definitionId = UUID.fromString(inner.getString("definitionId"));
         }
-        this.definitionId = UUID.fromString(inner.getString("definitionId"));
 
         if(!inner.containsKey("definition")){
-            throw new IllegalEventFormatException(data, "data->definition", "key missing");
+            log.info("definition missing!");
+        }else{
+            this.definition = inner.getString("definition");
         }
-        this.definition = inner.getString("definition");
 
         if(!inner.containsKey("source")){
             throw new IllegalEventFormatException(data, "data->source", "key missing");
