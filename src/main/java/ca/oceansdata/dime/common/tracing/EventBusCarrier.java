@@ -36,6 +36,17 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
         opts.addHeader("queryParams", "{}");
     }
 
+    public void setQueryParams(JsonObject params){
+        if(opts != null){
+
+            if(opts.getHeaders().get("queryParams") != null){
+                opts.getHeaders().remove("queryParams");
+            }
+
+            opts.addHeader("queryParams", params.toString());
+        }
+    }
+
     public EventBusCarrier(Message msg, String action){
         opts = new DeliveryOptions();
         //Copy all headers from the message except the action and timestamp header
