@@ -51,6 +51,14 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
         return opts.getHeaders().get("correlationId");
     }
 
+    /** Sets the correlation id to that of the passed in carrier.
+     * @param c The carrier's whose correlationId we're copying
+     */
+    public void setCorrelationId(EventBusCarrier c){
+        opts.getHeaders().remove("correlationId");
+        opts.addHeader("correlationId", c.getCorrelationId());
+    }
+
     public EventBusCarrier(Message msg, String action){
         opts = new DeliveryOptions();
         //Copy all headers from the message except the action and timestamp header
