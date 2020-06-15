@@ -3,12 +3,12 @@ package ca.oceansdata.dime.common.tracing;
 import ca.oceansdata.dime.common.exceptions.MissingActionException;
 import io.vertx.core.eventbus.DeliveryOptions;
 
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Iterator;
@@ -115,4 +115,5 @@ public class EventBusCarrier implements io.opentracing.propagation.TextMap {
         return opts;
 
     }
+
 }
