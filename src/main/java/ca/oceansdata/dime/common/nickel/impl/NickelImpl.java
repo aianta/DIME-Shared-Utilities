@@ -14,6 +14,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.time.Instant;
 import java.util.*;
 
 public class NickelImpl implements Nickel {
@@ -43,6 +44,11 @@ public class NickelImpl implements Nickel {
     }
 
     @Override
+    public void pack(byte[] bytes) {
+        putData(bytes);
+    }
+
+    @Override
     public NickelType type() {
         return this.type;
     }
@@ -68,7 +74,7 @@ public class NickelImpl implements Nickel {
     }
 
 
-    @Override
+
     public void putData(byte[] data) {
         this.payload = data;
     }
@@ -119,6 +125,10 @@ public class NickelImpl implements Nickel {
         this.timestamp = timestamp;
     }
 
+    public void setTimestamp(long time){
+        this.timestamp = Date.from(Instant.ofEpochMilli(time));
+    }
+
     public void setCorrelationId(UUID correlationId) {
         this.correlationId = correlationId;
     }
@@ -152,7 +162,7 @@ public class NickelImpl implements Nickel {
     }
 
     @Override
-    public Scope getScope(Tracer tracer, String operationName) {
+    public Scope extendScope(Tracer tracer, String operationName) {
         Tracer.SpanBuilder spanBuilder;
         try{
             SpanContext parentSpan = tracer.extract(
@@ -183,5 +193,17 @@ public class NickelImpl implements Nickel {
         Map<String,String> map = new HashMap<>();
         temp.forEach((s,o)->map.put(s,(String)o));
         return map;
+    }
+
+    public JsonObject tracing() {
+        return tracing;
+    }
+
+    public void setRequestQueryParams(JsonObject requestQueryParams) {
+        this.requestQueryParams = requestQueryParams;
+    }
+
+    public void setTracing(JsonObject tracing) {
+        this.tracing = tracing;
     }
 }

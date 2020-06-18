@@ -52,6 +52,13 @@ public interface Nickel extends TextMap {
         return nickel;
     }
 
+    /** Create a nickel from another nickel,
+     *  inheriting the correlation id, status code,
+     *  timestamp, and orcid.
+     *
+     * @param src nickel to inherit from
+     * @return a new nickel with inherited properties from src
+     */
     static Nickel from(Nickel src){
         NickelImpl result = new NickelImpl();
         result.setCorrelationId(src.correlationId());
@@ -82,7 +89,7 @@ public interface Nickel extends TextMap {
         result.setType(NickelType.ERROR);
         return result;
     }
-    
+
 
     /** Publish a nickel on a given event bus to a given address.
      *
@@ -182,7 +189,6 @@ public interface Nickel extends TextMap {
 
     String orcid();
 
-    void putData(byte[] data);
 
     byte [] getData();
 
@@ -196,9 +202,19 @@ public interface Nickel extends TextMap {
 
     boolean sendable();
 
+    void pack(byte[] bytes);
+
     void pack(JsonArray array);
 
     void pack(JsonObject object);
 
-    Scope getScope(Tracer tracer, String operationName);
+    /** Get's the scope embedded in the nickel and starts a span
+     *  for the given operation name.
+     * @param tracer tracer to use
+     * @param operationName operation name of the new span
+     * @return the scope of the nickel with the new span activated.
+     */
+    Scope extendScope(Tracer tracer, String operationName);
+
+
 }
