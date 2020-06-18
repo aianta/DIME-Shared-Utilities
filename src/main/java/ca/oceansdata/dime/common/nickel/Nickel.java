@@ -5,13 +5,20 @@ import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.TextMap;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.DeliveryOptions;
+
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.Future;
 import io.vertx.reactivex.core.Promise;
 import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.core.eventbus.Message;
 import io.vertx.reactivex.core.eventbus.MessageConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.time.Instant;
 import java.util.Date;
@@ -24,6 +31,7 @@ import java.util.UUID;
  *
  */
 public interface Nickel extends TextMap {
+    static final Logger log = LoggerFactory.getLogger(Nickel.class);
 
     /** Create a nickel with no type, orcid, or origin.
      *
@@ -33,6 +41,7 @@ public interface Nickel extends TextMap {
         NickelImpl nickel = new NickelImpl();
         nickel.setCorrelationId(UUID.randomUUID());
         nickel.setTimestamp(Date.from(Instant.now()));
+        nickel.setOrigin(NickelOrigin.UNSPECIFIED);
         nickel.setStatusCode(200); //Default 200 status code
         return nickel;
     }
@@ -76,6 +85,19 @@ public interface Nickel extends TextMap {
     static Nickel nickelForA(Nickel src){
         NickelImpl result = (NickelImpl)from(src);
         result.setType(NickelType.RESPONSE);
+        result.setOrigin(NickelOrigin.UNSPECIFIED);
+        return result;
+    }
+
+    /** Get a response nickel from a nickel, while
+     *  specifying an origin
+     * @param src
+     * @param origin
+     * @return
+     */
+    static Nickel nickelForA(Nickel src, NickelOrigin origin){
+        Nickel result = nickelForA(src);
+        result.setOrigin(origin);
         return result;
     }
 
@@ -98,6 +120,7 @@ public interface Nickel extends TextMap {
      * @param nickel the nickel to publish
      */
     static void publish(EventBus eb, String address, Nickel nickel){
+
         //Create message headers required to capture response nickel
         DeliveryOptions options = new DeliveryOptions()
                 .addHeader("correlationId", nickel.correlationId().toString())
@@ -106,7 +129,6 @@ public interface Nickel extends TextMap {
         //Send the nickel!
         eb.publish(address, nickel, options);
     }
-
     /** Send a nickel and get a promise for an associated response nickel.
      *
      * @param eb the event bus to send the nickel on
@@ -116,28 +138,31 @@ public interface Nickel extends TextMap {
      * nickel with the same correlation id, or fail upon the capture of an error
      * nickel with the same correlation id.
      */
-    static Promise<Nickel> send(EventBus eb, String address, Nickel nickel){
+    static Future<Nickel> send(EventBus eb, String address, Nickel nickel){
         Promise<Nickel> promise = Promise.promise();
         //Create a promise to complete once the consumer is no longer required.
         Promise<Void> consumerPromise = Promise.promise();
 
         //Create an event bus consumer that listens for a response nickel
         MessageConsumer<Nickel> consumer = eb.consumer(address, msg->{
+
             //If a nickel from the address has our correlation id
             if(msg.headers().get("correlationId").equals(nickel.correlationId().toString())){
 
                 //If it's a response nickel
                 if(msg.headers().get("type").equals(NickelType.RESPONSE.name())){
                     promise.complete(msg.body());
+                    //Either way, once we've gotten something back, unregister the consumer
+                    consumerPromise.complete();
                 }
 
                 //If it's an error nickel
                 if(msg.headers().get("type").equals(NickelType.ERROR)){
                     promise.fail("Bad Nickel!"); //TODO - probably should pass at least an error message around
+                    //Either way, once we've gotten something back, unregister the consumer
+                    consumerPromise.complete();
                 }
 
-                //Either way, once we've gotten something back, unregister the consumer
-                consumerPromise.complete();
             }
         });
 
@@ -152,7 +177,7 @@ public interface Nickel extends TextMap {
         //Send the nickel!
         publish(eb, address, nickel);
 
-        return promise;
+        return promise.future();
     }
 
 
@@ -215,6 +240,8 @@ public interface Nickel extends TextMap {
      * @return the scope of the nickel with the new span activated.
      */
     Scope extendScope(Tracer tracer, String operationName);
+
+    JsonObject toJson();
 
 
 }

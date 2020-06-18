@@ -15,5 +15,6 @@ public enum NickelOrigin {
     HISTORY_SERVICE,
     TASK_SERVICE, //TODO - rename Matching Service to Task Service
     CSV_INTEGRATION_SERVICE,
-    DIME_TOOLS
+    DIME_TOOLS,
+    UNSPECIFIED
 }

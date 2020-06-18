@@ -8,11 +8,14 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 
 import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.util.UUID;
 
-public class NickelCodec implements MessageCodec<Nickel, Nickel> {
+public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
+    private static final Logger log = LoggerFactory.getLogger(NickelCodec.class);
 
     /** Nickels are encoded with fixed length fields first.
      *  Dynamic length fields are encoded with an int representing
@@ -32,13 +35,10 @@ public class NickelCodec implements MessageCodec<Nickel, Nickel> {
      *
      *
      * @param buffer
-     * @param n
+     * @param nickel
      */
     @Override
-    public void encodeToWire(Buffer buffer, Nickel n) {
-
-        //We know how to handle the underlying implementation
-        NickelImpl nickel = (NickelImpl)n;
+    public void encodeToWire(Buffer buffer, NickelImpl nickel) {
 
         //Encode timestamp
         buffer.appendLong(nickel.timestamp());
@@ -73,7 +73,7 @@ public class NickelCodec implements MessageCodec<Nickel, Nickel> {
     }
 
     @Override
-    public Nickel decodeFromWire(int position, Buffer buffer) {
+    public NickelImpl decodeFromWire(int position, Buffer buffer) {
 
         //Encoded Nickel start position in buffer
         int _pos = position;
@@ -107,7 +107,7 @@ public class NickelCodec implements MessageCodec<Nickel, Nickel> {
 
         //Decode NickelOrigin
         StringBuilder originBuilder = new StringBuilder();
-        _pos = decodeString(orcidBuilder, buffer, _pos);
+        _pos = decodeString(originBuilder, buffer, _pos);
         NickelOrigin origin = NickelOrigin.valueOf(originBuilder.toString());
 
         //Decode httpResponseHeaders
@@ -143,8 +143,12 @@ public class NickelCodec implements MessageCodec<Nickel, Nickel> {
     }
 
     @Override
-    public Nickel transform(Nickel nickel) {
-        return null;
+    public NickelImpl transform(NickelImpl nickel) {
+
+        //TODO-for testing only, send nickel back when done
+        Buffer buffer = Buffer.buffer();
+        encodeToWire(buffer, nickel);
+        return decodeFromWire(0, buffer);
     }
 
     @Override

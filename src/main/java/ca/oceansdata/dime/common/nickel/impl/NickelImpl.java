@@ -16,6 +16,7 @@ import io.vertx.core.json.JsonObject;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class NickelImpl implements Nickel {
 
@@ -27,7 +28,7 @@ public class NickelImpl implements Nickel {
     private Integer statusCode;
     private JsonObject httpResponseHeaders = new JsonObject();
     private JsonObject requestQueryParams = new JsonObject();
-    private byte[] payload;
+    private byte[] payload = new byte[]{};
     private JsonObject tracing = new JsonObject();
 
     public boolean sendable(){
@@ -107,6 +108,16 @@ public class NickelImpl implements Nickel {
     @Override
     public Iterator<Map.Entry<String, String>> iterator() {
         return getTracingMap().entrySet().iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Map.Entry<String, String>> action) {
+        getTracingMap().entrySet().forEach(action);
+    }
+
+    @Override
+    public Spliterator<Map.Entry<String, String>> spliterator() {
+        return getTracingMap().entrySet().spliterator();
     }
 
     @Override
@@ -205,5 +216,20 @@ public class NickelImpl implements Nickel {
 
     public void setTracing(JsonObject tracing) {
         this.tracing = tracing;
+    }
+
+    public JsonObject toJson(){
+        JsonObject result = new JsonObject()
+                .put("correlationId", correlationId().toString())
+                .put("timestamp", dateTimestamp().toString())
+                .put("orcid", orcid())
+                .put("type", type().name())
+                .put("origin", origin().name())
+                .put("statusCode", statusCode())
+                .put("requestQueryParameters", requestQueryParams())
+                .put("httpResponseHeaders", httpResponseHeaders())
+                .put("payloadSize", payload.length);
+
+        return result;
     }
 }
