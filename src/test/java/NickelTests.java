@@ -1,13 +1,18 @@
+import ca.oceansdata.dime.common.event.Event;
 import ca.oceansdata.dime.common.nickel.Nickel;
 import ca.oceansdata.dime.common.nickel.NickelOrigin;
+import ca.oceansdata.dime.common.nickel.NickelRouter;
 import ca.oceansdata.dime.common.nickel.NickelType;
 import ca.oceansdata.dime.common.nickel.codec.NickelCodec;
 import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
 import io.vertx.core.json.JsonObject;
+import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.core.eventbus.EventBus;
+import io.vertx.reactivex.core.eventbus.MessageConsumer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(VertxExtension.class)
@@ -24,11 +28,182 @@ public class NickelTests {
 
     private static final Logger log = LoggerFactory.getLogger(NickelTests.class);
     private static final String EB_ADDRESS = "nickel-test";
+    private static MessageConsumer consumer = null;
+    private static NickelRouter router = null;
 
+    /** Before all tests configure the eventbus to use the nickel codec
+     * @param vertx
+     * @param testContext
+     */
     @BeforeAll
     static void init(Vertx vertx, VertxTestContext testContext){
         vertx.eventBus().getDelegate().registerDefaultCodec(NickelImpl.class, new NickelCodec());
         testContext.completeNow();
+    }
+
+    /** After each test, if an event bus consumer was registered, unregister
+     *  it.
+     * @param vertx
+     * @param testContext
+     */
+    @AfterEach
+    void unregisterConsumer(Vertx vertx, VertxTestContext testContext){
+        if(consumer != null){
+            consumer.rxUnregister().subscribe(()->testContext.verify(()->{
+                testContext.completeNow();
+            }));
+        }else{
+            testContext.completeNow();
+        }
+    }
+
+    /** After each test, if a nickel router was created, destroy it.
+     *
+     * @param vertx
+     * @param testContext
+     */
+    @AfterEach
+    void destroyRouter(Vertx vertx, VertxTestContext testContext){
+        if(router != null){
+            router.destroy();
+            testContext.completeNow();
+        }else{
+            testContext.completeNow();
+        }
+    }
+
+    @Test
+    @DisplayName("Use NickelRouter to apply a type specific function to incomping nickels")
+    void typeFunctionsWithRouter(Vertx vertx, VertxTestContext testContext){
+        EventBus eb = vertx.eventBus();
+
+        Checkpoint get = testContext.checkpoint();
+        Checkpoint post = testContext.checkpoint();
+        Checkpoint other = testContext.checkpoint();
+
+        //Create a router with 2 type functions and a global function
+        router = new NickelRouter(eb, EB_ADDRESS)
+                .typeFunction(NickelType.GET,
+                        ((getNickel, respNickel)->respNickel.pack(
+                                new JsonObject()
+                                .put("I was a", "get nickel!")
+                        )))
+                .typeFunction(NickelType.POST,
+                        ((postNickel, respNickel)->respNickel.pack(
+                                new JsonObject()
+                                .put("I was a", "post nickel!")
+                        )))
+                .function((otherNickel, respNickel)->respNickel.pack(
+                        new JsonObject()
+                        .put("I was a", "different nickel!")
+                ));
+
+        //Register a consumer to listen and parse response nickels
+        consumer = eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
+
+            Nickel response = (Nickel)msg.body();
+            log.info("Got {}", response.toJson().encodePrettily());
+            if(response.type().equals(NickelType.RESPONSE)){
+                log.info("Got response nickel");
+                JsonObject data = Nickel.unpack(response, JsonObject.class);
+
+                assertTrue(data.containsKey("I was a"));
+
+                if(data.getString("I was a").equals("get nickel!")){
+                    get.flag();
+                }
+
+                if(data.getString("I was a").equals("post nickel!")){
+                    post.flag();
+                }
+
+                if(data.getString("I was a").equals("different nickel!")){
+                    other.flag();
+                }
+            }
+        }));
+        Nickel n1 = createDefaultTestNickel();
+        Nickel n2 = createDefaultTestNickel().setType(NickelType.POST);
+        Nickel n3 = createDefaultTestNickel().setType(NickelType.ACTIVE);
+        Nickel.publish(eb,EB_ADDRESS, n1);
+        Nickel.publish(eb,EB_ADDRESS, n2);
+        Nickel.publish(eb, EB_ADDRESS, n3);
+    }
+
+    @Test
+    @DisplayName("Use NickelRouter to apply a function to incoming nickels")
+    void simpleNickelFunctionWithRouter(Vertx vertx, VertxTestContext testContext){
+        EventBus eb = vertx.eventBus();
+
+        router = new NickelRouter(eb, EB_ADDRESS)
+                .function((in,out)-> out) //Simply return the provided output nickel
+        ;
+
+        consumer = eb.consumer(EB_ADDRESS,msg->testContext.verify(()->{
+            Nickel response = (Nickel)msg.body();
+            if(response.type().equals(NickelType.RESPONSE)){
+                log.info(response.toJson().encodePrettily());
+                testContext.completeNow();
+            }
+        }));
+
+        Nickel input = createDefaultTestNickel();
+        Nickel.publish(eb, EB_ADDRESS, input);
+    }
+
+    @Test
+    @DisplayName("Use NickelRouter to handle nickels by type")
+    void typeHandlingWithNickelRouter(Vertx vertx, VertxTestContext testContext){
+        EventBus eb = vertx.eventBus();
+
+        //Create 3 checkpoints to be hit by nickel type handlers
+        Checkpoint typeHandlers = testContext.checkpoint(3);
+
+        //Create a nickel router with 3 type handlers
+        router = new NickelRouter(eb, EB_ADDRESS)
+                .typeHandler(NickelType.GET, getNickel->{
+                    assertEquals(NickelType.GET,getNickel.type());
+                    typeHandlers.flag();
+                } )
+                .typeHandler(NickelType.POST, postNickel->{
+                    assertEquals( NickelType.POST,postNickel.type());
+                    typeHandlers.flag();
+                })
+                .typeHandler(NickelType.ERROR, errorNickel->{
+                    assertEquals(NickelType.ERROR, errorNickel.type());
+                    typeHandlers.flag();
+                });
+
+        //Send 3 nickels
+        Nickel n1 = createDefaultTestNickel().setType(NickelType.GET);
+        Nickel n2 = createDefaultTestNickel().setType(NickelType.POST);
+        Nickel n3 = createDefaultTestNickel().setType(NickelType.ERROR);
+
+        Nickel.publish(eb, EB_ADDRESS, n1);
+        Nickel.publish(eb, EB_ADDRESS, n2);
+        Nickel.publish(eb, EB_ADDRESS, n3);
+
+    }
+
+    @Test
+    @DisplayName("Use NickelRouter to handle nickels")
+    void simpleNickelHandler(Vertx vertx, VertxTestContext testContext){
+        EventBus eb = vertx.eventBus();
+
+        router = new NickelRouter(eb, EB_ADDRESS);
+
+
+        router.handler(n-> testContext.verify(()->{
+            log.info("I got a nickel from the router!");
+            testContext.completeNow();
+        }));
+
+
+        Nickel n = createDefaultTestNickel();
+
+
+        Nickel.publish(eb,EB_ADDRESS, n);
+
     }
 
     @Test
@@ -38,7 +213,7 @@ public class NickelTests {
 
         Nickel n = createDefaultTestNickel();
 
-        eb.consumer(EB_ADDRESS, msg-> testContext.verify(()->{
+        consumer = eb.consumer(EB_ADDRESS, msg-> testContext.verify(()->{
 
             Nickel nickel = (Nickel)msg.body();
 
@@ -68,7 +243,7 @@ public class NickelTests {
 
         Nickel n = createDefaultTestNickel();
 
-        eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
+        consumer = eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
             Nickel nickel = (Nickel)msg.body();
             assertTrue(match(n, nickel));
             assertEquals(msg.headers().get("correlationId"), nickel.correlationId().toString());
@@ -88,7 +263,7 @@ public class NickelTests {
         log.info("Creating empty nickel");
         Nickel n = createDefaultTestNickel();
 
-        eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
+        consumer = eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
            try{
                Nickel nickel = (Nickel)msg.body();
                assertEquals(nickel.getData().length, 0);
@@ -118,7 +293,7 @@ public class NickelTests {
 
         n.pack(someData);
 
-        eb.consumer(EB_ADDRESS, msg-> testContext.verify(()->{
+        consumer = eb.consumer(EB_ADDRESS, msg-> testContext.verify(()->{
             Nickel receivedNickel = (Nickel)msg.body();
 
             JsonObject payload = Nickel.unpack(receivedNickel, JsonObject.class);
@@ -204,5 +379,6 @@ public class NickelTests {
                 NickelOrigin.DIME_GATEWAY
         );
     }
+
 
 }

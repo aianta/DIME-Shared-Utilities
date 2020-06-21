@@ -1,14 +1,9 @@
 package ca.oceansdata.dime.common.nickel;
 
+
 import io.vertx.core.Handler;
-import io.vertx.reactivex.core.eventbus.Message;
 
-public class NickelHandler implements Handler<Message> {
+public interface NickelHandler extends Handler<Nickel> {
 
-
-
-    @Override
-    public void handle(Message event) {
-        
-    }
+    void handle(Nickel nickel);
 }

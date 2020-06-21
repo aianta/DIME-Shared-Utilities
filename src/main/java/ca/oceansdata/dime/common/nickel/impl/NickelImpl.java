@@ -45,8 +45,9 @@ public class NickelImpl implements Nickel {
     }
 
     @Override
-    public void pack(byte[] bytes) {
+    public Nickel pack(byte[] bytes) {
         putData(bytes);
+        return this;
     }
 
     @Override
@@ -73,7 +74,6 @@ public class NickelImpl implements Nickel {
     public String orcid() {
         return orcid;
     }
-
 
 
     public void putData(byte[] data) {
@@ -125,11 +125,13 @@ public class NickelImpl implements Nickel {
         tracing.put(key,value);
     }
 
-    public void setType(HttpMethod method){
+    public Nickel setType(HttpMethod method){
         this.type = NickelType.fromHttpMethod(method);
+        return this;
     }
-    public void setType(NickelType type) {
+    public Nickel setType(NickelType type) {
         this.type = type;
+        return this;
     }
 
     public void setTimestamp(Date timestamp) {
@@ -149,12 +151,14 @@ public class NickelImpl implements Nickel {
     }
 
 
-    public void setOrigin(NickelOrigin origin) {
+    public Nickel setOrigin(NickelOrigin origin) {
         this.origin = origin;
+        return this;
     }
 
-    public void setStatusCode(Integer statusCode) {
+    public Nickel setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+        return this;
     }
 
     public void setHttpResponseHeaders(JsonObject httpResponseHeaders) {
@@ -162,14 +166,16 @@ public class NickelImpl implements Nickel {
     }
 
 
-    public void pack(JsonArray array){
+    public Nickel pack(JsonArray array){
         String encodedJson = array.encode();
         putData(encodedJson.getBytes());
+        return this;
     }
 
-    public void pack(JsonObject object){
+    public Nickel pack(JsonObject object){
         String encodedJson = object.encode();
         putData(encodedJson.getBytes());
+        return this;
     }
 
     @Override

@@ -33,7 +33,7 @@ import java.util.UUID;
 public interface Nickel extends TextMap {
     static final Logger log = LoggerFactory.getLogger(Nickel.class);
 
-    /** Create a nickel with no type, orcid, or origin.
+    /** Create a nickel with no type, orcid, and an unspecified origin.
      *
      * @return
      */
@@ -196,13 +196,13 @@ public interface Nickel extends TextMap {
         }
     }
 
-    void setType(HttpMethod method);
+    Nickel setType(HttpMethod method);
 
-    void setType(NickelType type);
+    Nickel setType(NickelType type);
 
-    void setOrigin(NickelOrigin origin);
+    Nickel setOrigin(NickelOrigin origin);
 
-    void setStatusCode(Integer statusCode);
+    Nickel setStatusCode(Integer statusCode);
 
     NickelType type();
 
@@ -227,11 +227,11 @@ public interface Nickel extends TextMap {
 
     boolean sendable();
 
-    void pack(byte[] bytes);
+    Nickel pack(byte[] bytes);
 
-    void pack(JsonArray array);
+    Nickel pack(JsonArray array);
 
-    void pack(JsonObject object);
+    Nickel pack(JsonObject object);
 
     /** Get's the scope embedded in the nickel and starts a span
      *  for the given operation name.
