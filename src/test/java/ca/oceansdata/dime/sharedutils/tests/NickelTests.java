@@ -1,8 +1,6 @@
-import ca.oceansdata.dime.common.event.Event;
-import ca.oceansdata.dime.common.nickel.Nickel;
-import ca.oceansdata.dime.common.nickel.NickelOrigin;
-import ca.oceansdata.dime.common.nickel.NickelRouter;
-import ca.oceansdata.dime.common.nickel.NickelType;
+package ca.oceansdata.dime.sharedutils.tests;
+
+import ca.oceansdata.dime.common.nickel.*;
 import ca.oceansdata.dime.common.nickel.codec.NickelCodec;
 import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
 import io.vertx.core.json.JsonObject;
@@ -19,6 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,6 +71,32 @@ public class NickelTests {
         }else{
             testContext.completeNow();
         }
+    }
+
+    @Test
+    @DisplayName("Send and receive a batch of nickels")
+    void sendBatch(Vertx vertx, VertxTestContext testContext){
+        EventBus eb = vertx.eventBus();
+        int batchSize = 5;
+
+        router = new NickelRouter(eb, EB_ADDRESS)
+                .function((in,out)->out);
+
+        NickelBatch roll = new NickelBatch();
+
+        for(int i = 0; i < batchSize; i++){
+            roll.add(EB_ADDRESS, createDefaultTestNickel());
+        }
+
+        Nickel.sendAll(eb,roll).rxOnComplete().subscribe(
+                results->testContext.verify(()->{
+
+                    assertEquals(batchSize, results.size());
+                    testContext.completeNow();
+
+                })
+        );
+
     }
 
     @Test

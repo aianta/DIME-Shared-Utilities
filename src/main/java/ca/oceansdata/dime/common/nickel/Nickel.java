@@ -11,6 +11,7 @@ import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.reactivex.core.CompositeFuture;
 import io.vertx.reactivex.core.Future;
 import io.vertx.reactivex.core.Promise;
 import io.vertx.reactivex.core.eventbus.EventBus;
@@ -21,8 +22,7 @@ import org.slf4j.LoggerFactory;
 
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /** Common eventbus message wrapper interface for DIME services
  *  @Author Alexandru Ianta
@@ -31,7 +31,7 @@ import java.util.UUID;
  *
  */
 public interface Nickel extends TextMap {
-    static final Logger log = LoggerFactory.getLogger(Nickel.class);
+    Logger log = LoggerFactory.getLogger(Nickel.class);
 
     /** Create a nickel with no type, orcid, and an unspecified origin.
      *
@@ -129,7 +129,29 @@ public interface Nickel extends TextMap {
         //Send the nickel!
         eb.publish(address, nickel, options);
     }
-    /** Send a nickel and get a promise for an associated response nickel.
+
+    /** Send a collection of nickels to various addresses and get a composite future
+     *  for when we've received replies for each nickel that was sent.
+     * @param eb
+     * @param nickels a map of addresses and the nickels to be sent to that address
+     * @return
+     */
+    static CompositeFuture sendAll(EventBus eb, Iterable<Map.Entry<String, List<Nickel>>> nickels){
+
+        List<Future> nickelFutures = new ArrayList<>();
+
+        Iterator<Map.Entry<String,List<Nickel>>> it = nickels.iterator();
+        while (it.hasNext()){
+            Map.Entry<String,List<Nickel>> entry = it.next();
+            for(Nickel n: entry.getValue()){
+                nickelFutures.add(send(eb, entry.getKey(), n));
+            }
+        }
+
+        return CompositeFuture.all(nickelFutures);
+    }
+
+    /** Send a nickel and get a future for an associated response nickel.
      *
      * @param eb the event bus to send the nickel on
      * @param address the address to send the nickel to and listen for the the response nickel on

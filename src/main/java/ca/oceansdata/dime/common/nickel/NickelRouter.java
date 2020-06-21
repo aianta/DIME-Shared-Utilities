@@ -16,16 +16,21 @@ import java.util.Map;
  *
  *  Two kinds of processors are supported by the NickelHandler.
  *
- *  1) Functions
- *  Functions produce a nickel when provided with a nickel. The
- *  produced nickel is automatically published onto the eventbus.
+ *  <ul>
+ *      <li>
+ *        <b>Functions</b>
+ *          Functions produce a nickel when provided with a nickel. The
+ *          produced nickel is automatically published onto the eventbus.
  *
- *  Note that functions cannot be applied to RESPONSE or ERROR nickels,
- *  as that would create an infinite loop. Ex: Function produces RESPONSE
- *  which causes the router to invoke the function again and so on.
- *
- *  2) Handlers
- *  Handlers simply accept a nickel as a parameter and do something.
+ *          Note that functions cannot be applied to RESPONSE or ERROR nickels,
+ *          as that would create an infinite loop. Ex: Function produces RESPONSE
+ *           which causes the router to invoke the function again and so on.
+ *      </li>
+ *      <li>
+ *          <b>Handlers</b>
+ *           Handlers simply accept a nickel as a parameter and do something.
+ *      </li>
+ *  </ul>
  *
  *  One can specify a  global nickel function/handler or
  *  type function/handler(s) that get invoked only if the incoming nickel is
@@ -40,16 +45,21 @@ import java.util.Map;
  *  Functions take precedence over handlers, thus an incoming nickel
  *  will be processed by whichever function/handler is found first in this order:
  *
- *  1) Type Functions
- *  2) Global Function
- *  3) Type Handlers
- *  4) Global Handler
+ * <ol>
+ *    <li>Type Functions</li>
+ *    <li>Global Function</li>
+ *    <li>Type Handlers</li>
+ *    <li>Global Handler</li>
+ * </ol>
+ *
  *
  *  If a type function/handler is invoked, the global function/handler will not
  *  be invoked.
  */
 public class NickelRouter implements Handler<Message> {
     private static final Logger log = LoggerFactory.getLogger(NickelRouter.class);
+
+    public static int NICKLES_SWALLOWED = 0;
 
     //Event Bus to bind handler to
     private EventBus eb;
@@ -85,7 +95,7 @@ public class NickelRouter implements Handler<Message> {
             log.error("Function cannot be applied to {} nickels!", type.name());
             return this;
         }
-        
+
         functionMap.put(type, function);
         return this;
     }
@@ -145,8 +155,8 @@ public class NickelRouter implements Handler<Message> {
             return;
         }
 
-        // No function or handler for this nickel, print a message and swallow it.
-        log.error("Missing nickel function/handler, swallowing nickel!");
+        // No function or handler for this nickel, increment swallow counter to aide debugging
+        NICKLES_SWALLOWED++;
         return;
     }
 
