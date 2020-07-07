@@ -24,25 +24,14 @@ public class NickelImpl implements Nickel {
     private Date timestamp;
     private UUID correlationId;
     private String orcid;
-    private NickelOrigin origin;
-    private Integer statusCode;
+    private NickelOrigin origin = NickelOrigin.UNSPECIFIED;
+    private Integer statusCode = 200;
     private JsonObject httpResponseHeaders = new JsonObject();
     private JsonObject requestQueryParams = new JsonObject();
     private byte[] payload = new byte[]{};
     private JsonObject tracing = new JsonObject();
+    private JsonObject metadata = new JsonObject();
 
-    public boolean sendable(){
-        if( this.type != null &&
-            this.timestamp != null &&
-            this.correlationId != null &&
-            this.orcid != null &&
-            this.origin != null &&
-            this.statusCode != null
-        ){
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public Nickel pack(byte[] bytes) {
@@ -73,6 +62,17 @@ public class NickelImpl implements Nickel {
     @Override
     public String orcid() {
         return orcid;
+    }
+
+    @Override
+    public JsonObject getMeta() {
+        return metadata;
+    }
+
+    @Override
+    public Nickel setMeta(JsonObject metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
 
@@ -228,6 +228,7 @@ public class NickelImpl implements Nickel {
         JsonObject result = new JsonObject()
                 .put("correlationId", correlationId().toString())
                 .put("timestamp", dateTimestamp().toString())
+                .put("metadata", getMeta())
                 .put("orcid", orcid())
                 .put("type", type().name())
                 .put("origin", origin().name())

@@ -7,6 +7,7 @@ import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,8 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
      *  7)  NickelOrigin
      *  8)  httpResponseHeaders
      *  9)  tracing
-     *  10) payload
+     *  10) metadata
+     *  11) payload
      *
      *
      * @param buffer
@@ -66,6 +68,9 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
 
         //Encode tracing
         encodeJson(buffer, nickel.tracing());
+
+        //Encode metadata
+        encodeJson(buffer, nickel.getMeta());
 
         //Encode payload
         encodeBytes(buffer, nickel.getData());
@@ -111,16 +116,20 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
         NickelOrigin origin = NickelOrigin.valueOf(originBuilder.toString());
 
         //Decode httpResponseHeaders
-        JsonObject httpResponseHeaders = new JsonObject();
+        JsonArray httpResponseHeaders = new JsonArray();
         _pos = decodeJson(httpResponseHeaders, buffer, _pos);
 
         //Decode requestQueryParamters
-        JsonObject requestQueryParameters = new JsonObject();
+        JsonArray requestQueryParameters = new JsonArray();
         _pos = decodeJson(requestQueryParameters, buffer, _pos);
 
         //Decode tracing
-        JsonObject tracing = new JsonObject();
+        JsonArray tracing = new JsonArray();
         _pos = decodeJson(tracing, buffer, _pos);
+
+        //Decode metadata
+        JsonArray metadata = new JsonArray();
+        _pos = decodeJson(metadata, buffer, _pos);
 
         //Decode payload
         Buffer byteBuffer = Buffer.buffer();
@@ -134,10 +143,12 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
         decodedNickel.setType(nickelType);
         decodedNickel.setOrcid(orcid);
         decodedNickel.setOrigin(origin);
-        decodedNickel.setHttpResponseHeaders(httpResponseHeaders);
-        decodedNickel.setRequestQueryParams(requestQueryParameters);
-        decodedNickel.setTracing(tracing);
+        decodedNickel.setHttpResponseHeaders(httpResponseHeaders.getJsonObject(0));
+        decodedNickel.setRequestQueryParams(requestQueryParameters.getJsonObject(0));
+        decodedNickel.setTracing(tracing.getJsonObject(0));
+        decodedNickel.setMeta(metadata.getJsonObject(0));
         decodedNickel.putData(payload);
+
 
         return decodedNickel;
     }
@@ -175,7 +186,7 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
         return position;
     }
 
-    private int decodeJson(JsonObject result, Buffer buffer, int position){
+    private int decodeJson(JsonArray result, Buffer buffer, int position){
         //Get the length of the encoded json string in bytes
         int numBytes = buffer.getInt(position);
 
@@ -185,8 +196,10 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
         //Get the encoded json string
         String encodedJson = buffer.getString(position, position+=numBytes);
 
+
         //Decode the string into the json object
-        result = new JsonObject(encodedJson);
+        result.add(new JsonObject(encodedJson));
+
 
         //Return the new buffer position
         return position;
@@ -226,7 +239,7 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
         buffer.appendString(value);
     }
 
-    private void encodeJson(Buffer buffer,JsonObject data){
+    private void encodeJson(Buffer buffer, JsonObject data){
         //Get the string encoding of the json object
         String encodedJson = data.encode();
 
