@@ -130,8 +130,9 @@ public class NickelRouter implements Handler<Message> {
              * then publish its result on the eventbus.
              */
             if(function != null){
-                Nickel result = function.apply(nickel, Nickel.nickelForA(nickel));
-                Nickel.publish(eb, address, result);
+                function.apply(nickel, Nickel.nickelForA(nickel)).onSuccess(
+                        nickelback->Nickel.publish(eb, address, nickelback)
+                );
                 return;
             }
         }

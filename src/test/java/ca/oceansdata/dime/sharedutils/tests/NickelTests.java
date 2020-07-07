@@ -20,6 +20,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
+import io.vertx.reactivex.core.Future;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.core.eventbus.EventBus;
 import io.vertx.reactivex.core.eventbus.MessageConsumer;
@@ -101,7 +102,7 @@ public class NickelTests {
                     .put("error","A dummy error"));
                     errNickel.setStatusCode(500);
                     log.info("errNickel: {}", errNickel.toJson().encodePrettily());
-                    return errNickel;
+                    return Future.succeededFuture(errNickel);
                 });
 
         Nickel n = createDefaultTestNickel();
@@ -261,7 +262,7 @@ public class NickelTests {
         int batchSize = 5;
 
         router = new NickelRouter(eb, EB_ADDRESS)
-                .function((in,out)->out);
+                .function((in,out)->Future.succeededFuture(out));
 
         NickelBatch roll = new NickelBatch();
 
@@ -292,19 +293,19 @@ public class NickelTests {
         //Create a router with 2 type functions and a global function
         router = new NickelRouter(eb, EB_ADDRESS)
                 .typeFunction(NickelType.GET,
-                        ((getNickel, respNickel)->respNickel.pack(
+                        ((getNickel, respNickel)-> Future.succeededFuture(respNickel.pack(
                                 new JsonObject()
                                 .put("I was a", "get nickel!")
-                        )))
+                        ))))
                 .typeFunction(NickelType.POST,
-                        ((postNickel, respNickel)->respNickel.pack(
+                        ((postNickel, respNickel)->Future.succeededFuture(respNickel.pack(
                                 new JsonObject()
                                 .put("I was a", "post nickel!")
-                        )))
-                .function((otherNickel, respNickel)->respNickel.pack(
+                        ))))
+                .function((otherNickel, respNickel)->Future.succeededFuture(respNickel.pack(
                         new JsonObject()
                         .put("I was a", "different nickel!")
-                ));
+                )));
 
         //Register a consumer to listen and parse response nickels
         consumer = eb.consumer(EB_ADDRESS, msg->testContext.verify(()->{
@@ -344,7 +345,7 @@ public class NickelTests {
         EventBus eb = vertx.eventBus();
 
         router = new NickelRouter(eb, EB_ADDRESS)
-                .function((in,out)-> out) //Simply return the provided output nickel
+                .function((in,out)-> Future.succeededFuture(out)) //Simply return the provided output nickel
         ;
 
         consumer = eb.consumer(EB_ADDRESS,msg->testContext.verify(()->{

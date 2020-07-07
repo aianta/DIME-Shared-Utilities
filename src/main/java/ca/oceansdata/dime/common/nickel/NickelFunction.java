@@ -1,9 +1,11 @@
 package ca.oceansdata.dime.common.nickel;
 
+import io.vertx.reactivex.core.Future;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public interface NickelFunction extends BiFunction<Nickel,Nickel,Nickel> {
+public interface NickelFunction extends BiFunction<Nickel,Nickel,Future<Nickel>> {
 
     /** A method that produces a nickel upon being applied on a nickel.
      *
@@ -15,5 +17,5 @@ public interface NickelFunction extends BiFunction<Nickel,Nickel,Nickel> {
      * @return the resulting nickel
      */
     @Override
-    Nickel apply(Nickel in, Nickel out);
+    Future<Nickel> apply(Nickel in, Nickel out);
 }
