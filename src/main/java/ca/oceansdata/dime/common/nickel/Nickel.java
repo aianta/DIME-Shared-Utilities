@@ -1,5 +1,6 @@
 package ca.oceansdata.dime.common.nickel;
 
+import ca.oceansdata.dime.common.exceptions.ErrorNickel;
 import ca.oceansdata.dime.common.exceptions.UnpackException;
 import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
 import io.opentracing.Scope;
@@ -171,7 +172,6 @@ public interface Nickel extends TextMap {
             if(msg.headers().get("correlationId").equals(nickel.correlationId().toString())){
 
                 //If it's a response nickel
-
                 if(NickelType.valueOf(msg.headers().get("type")).equals(NickelType.RESPONSE)){
                     promise.complete(msg.body());
                     //Either way, once we've gotten something back, unregister the consumer
@@ -180,16 +180,14 @@ public interface Nickel extends TextMap {
 
                 //If it's an error nickel
                 if(NickelType.valueOf(msg.headers().get("type")).equals(NickelType.ERROR)){
-                    try {
-                        JsonObject errorObject = Nickel.unpack(msg.body(), JsonObject.class);
-                        promise.fail(errorObject.containsKey("error")?
-                                errorObject.getString("error"):
-                                "bad nickel!");
-                    } catch (UnpackException e) {
-                        e.printStackTrace();
-                        promise.fail(e);
-                    }
+                    promise.fail(new ErrorNickel(msg.body()));
                     //Either way, once we've gotten something back, unregister the consumer
+                    consumerPromise.complete();
+                }
+
+                //If it's a timeout nickel
+                if(NickelType.valueOf(msg.headers().get("type")).equals(NickelType.TIMEOUT)){
+                    promise.complete(msg.body());
                     consumerPromise.complete();
                 }
 
