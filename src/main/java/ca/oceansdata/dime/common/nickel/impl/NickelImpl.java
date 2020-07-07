@@ -168,12 +168,14 @@ public class NickelImpl implements Nickel {
 
 
     public Nickel pack(JsonArray array){
+        httpResponseHeaders.put("Content-Type", "application/json");
         String encodedJson = array.encode();
         putData(encodedJson.getBytes());
         return this;
     }
 
     public Nickel pack(JsonObject object){
+        httpResponseHeaders.put("Content-Type", "application/json");
         String encodedJson = object.encode();
         putData(encodedJson.getBytes());
         return this;
