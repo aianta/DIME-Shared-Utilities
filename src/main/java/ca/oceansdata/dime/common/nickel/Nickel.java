@@ -297,6 +297,8 @@ public interface Nickel extends TextMap {
 
     JsonObject requestQueryParams();
 
+    Nickel setRequestQueryParams(JsonObject params);
+
     Nickel pack(byte[] bytes);
 
     Nickel pack(JsonArray array);

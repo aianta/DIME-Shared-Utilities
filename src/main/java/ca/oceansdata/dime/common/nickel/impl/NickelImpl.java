@@ -216,8 +216,9 @@ public class NickelImpl implements Nickel {
         return tracing;
     }
 
-    public void setRequestQueryParams(JsonObject requestQueryParams) {
+    public Nickel setRequestQueryParams(JsonObject requestQueryParams) {
         this.requestQueryParams = requestQueryParams;
+        return this;
     }
 
     public void setTracing(JsonObject tracing) {
