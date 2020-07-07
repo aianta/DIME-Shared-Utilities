@@ -146,8 +146,9 @@ public class NickelImpl implements Nickel {
         this.correlationId = correlationId;
     }
 
-    public void setOrcid(String orcid) {
+    public Nickel setOrcid(String orcid) {
         this.orcid = orcid;
+        return this;
     }
 
 
