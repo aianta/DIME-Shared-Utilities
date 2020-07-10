@@ -9,7 +9,6 @@ import io.jaegertracing.internal.JaegerTracer;
 import io.jaegertracing.internal.reporters.LoggingReporter;
 import io.jaegertracing.internal.samplers.ConstSampler;
 import io.jaegertracing.spi.Reporter;
-import io.jaegertracing.internal.reporters.NoopReporter;
 import io.jaegertracing.spi.Sampler;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;

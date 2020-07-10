@@ -14,6 +14,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.CompositeFuture;
 import io.vertx.reactivex.core.Future;
 import io.vertx.reactivex.core.Promise;
+import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.core.eventbus.EventBus;
 import io.vertx.reactivex.core.eventbus.MessageConsumer;
 import org.slf4j.Logger;
@@ -162,6 +163,7 @@ public interface Nickel extends TextMap {
      */
     static Future<Nickel> send(EventBus eb, String address, Nickel nickel){
         Promise<Nickel> promise = Promise.promise();
+
         //Create a promise to complete once the consumer is no longer required.
         Promise<Void> consumerPromise = Promise.promise();
 
@@ -206,6 +208,29 @@ public interface Nickel extends TextMap {
         publish(eb, address, nickel);
 
         return promise.future();
+    }
+
+    static Future<Nickel> sendWithTimeout(Vertx vertx, String address, Nickel nickel, long timeout){
+        //Create a timeout nickel to send if we don't get a response in 5 seconds.
+        Nickel timeoutNickel = Nickel.from(nickel)
+                .setOrcid(SYSTEM_ORCID)
+                .setStatusCode(504)
+                .setType(NickelType.TIMEOUT);
+
+        /** Set a timer that sends the timeout nickel if a response is not received by timeout */
+        Future<Nickel> response = send(vertx.eventBus(), address, nickel);
+        vertx.setTimer(timeout, timeoutId->{
+            if(!response.isComplete()){
+                log.warn("Request {} - {} - {} time out!",
+                        nickel.correlationId().toString(),
+                        nickel.type().toString(),
+                        address
+                );
+                Nickel.publish(vertx.eventBus(), address, timeoutNickel);
+            }
+        });
+
+        return response;
     }
 
 
