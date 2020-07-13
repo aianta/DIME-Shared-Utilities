@@ -155,11 +155,7 @@ public class NickelCodec implements MessageCodec<NickelImpl, NickelImpl> {
 
     @Override
     public NickelImpl transform(NickelImpl nickel) {
-
-        //TODO-for testing only, send nickel back when done
-        Buffer buffer = Buffer.buffer();
-        encodeToWire(buffer, nickel);
-        return decodeFromWire(0, buffer);
+        return nickel;
     }
 
     @Override
