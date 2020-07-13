@@ -15,6 +15,7 @@ public enum NickelType {
     PUT,
     DELETE,
     //Custom Service Actions
+    ALL,
     MAP,
     RETRIEVE,
     NEW_METADATA,
