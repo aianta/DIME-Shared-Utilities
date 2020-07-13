@@ -3,7 +3,6 @@ package ca.oceansdata.dime.common.tracing;
 import ca.oceansdata.dime.common.exceptions.MissingActionException;
 import io.vertx.core.eventbus.DeliveryOptions;
 
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.Message;
 import org.slf4j.Logger;
