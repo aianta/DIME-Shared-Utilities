@@ -1,6 +1,7 @@
 package ca.oceansdata.dime.common.nickel;
 
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.EventBus;
 import io.vertx.reactivex.core.eventbus.Message;
 import io.vertx.reactivex.core.eventbus.MessageConsumer;
@@ -132,6 +133,12 @@ public class NickelRouter implements Handler<Message> {
             if(function != null){
                 function.apply(nickel, Nickel.nickelForA(nickel)).onSuccess(
                         nickelback->Nickel.publish(eb, address, nickelback)
+                ).onFailure(
+                        err->Nickel.publish(eb, address,
+                                Nickel.badNickel(nickel).pack(
+                                        new JsonObject()
+                                        .put("error", err.getMessage())
+                                ))
                 );
                 return;
             }

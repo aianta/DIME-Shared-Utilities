@@ -110,6 +110,7 @@ public interface Nickel extends TextMap {
     static Nickel badNickel(Nickel src){
         NickelImpl result = (NickelImpl)from(src);
         result.setType(NickelType.ERROR);
+        result.setStatusCode(500); //Default error status code
         return result;
     }
 
