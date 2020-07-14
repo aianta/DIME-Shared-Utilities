@@ -226,7 +226,7 @@ public class NickelImpl implements Nickel {
     public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonObject data) {
         pack(data);
         tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
-        tracer.activeSpan().finish();
+        scope.span().finish();
         return this;
     }
 
@@ -234,7 +234,7 @@ public class NickelImpl implements Nickel {
     public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonArray data) {
         pack(data);
         tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
-        tracer.activeSpan().finish();
+        scope.span().finish();
         return this;
     }
 
@@ -242,7 +242,7 @@ public class NickelImpl implements Nickel {
     public Nickel packInjectAndFinish(Tracer tracer,Scope scope, byte[] data) {
         pack(data);
         tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
-        tracer.activeSpan().finish();
+        scope.span().finish();
         return this;
     }
 
