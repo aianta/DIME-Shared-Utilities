@@ -148,6 +148,36 @@ public class ErrorNickel extends Exception implements Nickel {
     }
 
     @Override
+    public Nickel packAndInject(Tracer tracer, JsonObject data) {
+        return source.packAndInject(tracer, data);
+    }
+
+    @Override
+    public Nickel packAndInject(Tracer tracer, JsonArray data) {
+        return source.packAndInject(tracer, data);
+    }
+
+    @Override
+    public Nickel packAndInject(Tracer tracer, byte[] data) {
+        return source.packAndInject(tracer, data);
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, JsonObject data) {
+        return source.packInjectAndFinish(tracer, data);
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, JsonArray data) {
+        return source.packInjectAndFinish(tracer, data);
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, byte[] data) {
+        return source.packInjectAndFinish(tracer, data);
+    }
+
+    @Override
     public JsonObject toJson() {
         return source.toJson();
     }
