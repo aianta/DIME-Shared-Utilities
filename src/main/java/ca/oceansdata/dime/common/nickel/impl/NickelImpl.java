@@ -202,46 +202,46 @@ public class NickelImpl implements Nickel {
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, JsonObject data) {
+    public Nickel packAndInject(Tracer tracer, Scope scope, JsonObject data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, JsonArray data) {
+    public Nickel packAndInject(Tracer tracer,Scope scope, JsonArray data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, byte[] data) {
+    public Nickel packAndInject(Tracer tracer,Scope scope, byte[] data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, JsonObject data) {
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonObject data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, JsonArray data) {
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonArray data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, byte[] data) {
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, byte[] data) {
         pack(data);
-        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }

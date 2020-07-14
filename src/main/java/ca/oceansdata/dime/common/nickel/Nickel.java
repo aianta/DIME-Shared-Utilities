@@ -345,7 +345,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packAndInject(Tracer tracer, JsonObject data);
+    Nickel packAndInject(Tracer tracer,Scope scope, JsonObject data);
 
     /** Packs a JsonArray and injects the distributed tracing context
      *  into the nickel.
@@ -353,7 +353,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packAndInject(Tracer tracer, JsonArray data);
+    Nickel packAndInject(Tracer tracer,Scope scope, JsonArray data);
 
     /** Packs a byte [] and injects the distributed tracing context
      *  into the nickel.
@@ -361,7 +361,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packAndInject(Tracer tracer, byte [] data);
+    Nickel packAndInject(Tracer tracer,Scope scope, byte [] data);
 
     /** Packs a JsonObject, injects the distributed tracing context
      *  into the nickel, and finally finishes the current span.
@@ -370,7 +370,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packInjectAndFinish(Tracer tracer,JsonObject data);
+    Nickel packInjectAndFinish(Tracer tracer,Scope scope,JsonObject data);
 
     /** Packs a JsonArray, injects the distributed tracing context
      *  into the nickel, and finally finishes the current span.
@@ -379,7 +379,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packInjectAndFinish(Tracer tracer, JsonArray data);
+    Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonArray data);
 
     /** Packs a byte [], injects the distributed tracing context
      *  into the nickel, and finally finishes the current span.
@@ -388,7 +388,7 @@ public interface Nickel extends TextMap {
      * @param data the data to pack into the nickel
      * @return the updated nickel
      */
-    Nickel packInjectAndFinish(Tracer tracer, byte [] data);
+    Nickel packInjectAndFinish(Tracer tracer,Scope scope, byte [] data);
 
     JsonObject toJson();
 

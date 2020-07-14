@@ -148,33 +148,33 @@ public class ErrorNickel extends Exception implements Nickel {
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, JsonObject data) {
-        return source.packAndInject(tracer, data);
+    public Nickel packAndInject(Tracer tracer,Scope scope, JsonObject data) {
+        return source.packAndInject(tracer,scope, data);
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, JsonArray data) {
-        return source.packAndInject(tracer, data);
+    public Nickel packAndInject(Tracer tracer,Scope scope, JsonArray data) {
+        return source.packAndInject(tracer,scope, data);
     }
 
     @Override
-    public Nickel packAndInject(Tracer tracer, byte[] data) {
-        return source.packAndInject(tracer, data);
+    public Nickel packAndInject(Tracer tracer,Scope scope, byte[] data) {
+        return source.packAndInject(tracer,scope, data);
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, JsonObject data) {
-        return source.packInjectAndFinish(tracer, data);
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonObject data) {
+        return source.packInjectAndFinish(tracer,scope, data);
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, JsonArray data) {
-        return source.packInjectAndFinish(tracer, data);
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, JsonArray data) {
+        return source.packInjectAndFinish(tracer,scope, data);
     }
 
     @Override
-    public Nickel packInjectAndFinish(Tracer tracer, byte[] data) {
-        return source.packInjectAndFinish(tracer, data);
+    public Nickel packInjectAndFinish(Tracer tracer,Scope scope, byte[] data) {
+        return source.packInjectAndFinish(tracer,scope, data);
     }
 
     @Override
