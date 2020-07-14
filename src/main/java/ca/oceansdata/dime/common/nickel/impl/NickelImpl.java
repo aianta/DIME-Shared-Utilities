@@ -201,6 +201,51 @@ public class NickelImpl implements Nickel {
         return tracer.activateSpan(span);
     }
 
+    @Override
+    public Nickel packAndInject(Tracer tracer, JsonObject data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        return this;
+    }
+
+    @Override
+    public Nickel packAndInject(Tracer tracer, JsonArray data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        return this;
+    }
+
+    @Override
+    public Nickel packAndInject(Tracer tracer, byte[] data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        return this;
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, JsonObject data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.activeSpan().finish();
+        return this;
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, JsonArray data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.activeSpan().finish();
+        return this;
+    }
+
+    @Override
+    public Nickel packInjectAndFinish(Tracer tracer, byte[] data) {
+        pack(data);
+        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.activeSpan().finish();
+        return this;
+    }
+
     /** Utility method that converts the tracing json object
      *  into a Map<String,String>. Used to encode and decode
      *  tracing text map when sending a nickel over the event

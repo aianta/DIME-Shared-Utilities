@@ -338,6 +338,57 @@ public interface Nickel extends TextMap {
      */
     Scope extendScope(Tracer tracer, String operationName);
 
+    /** Packs a JsonObject and injects the distributed tracing context
+     *  into the nickel.
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packAndInject(Tracer tracer, JsonObject data);
+
+    /** Packs a JsonArray and injects the distributed tracing context
+     *  into the nickel.
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packAndInject(Tracer tracer, JsonArray data);
+
+    /** Packs a byte [] and injects the distributed tracing context
+     *  into the nickel.
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packAndInject(Tracer tracer, byte [] data);
+
+    /** Packs a JsonObject, injects the distributed tracing context
+     *  into the nickel, and finally finishes the current span.
+     *
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packInjectAndFinish(Tracer tracer,JsonObject data);
+
+    /** Packs a JsonArray, injects the distributed tracing context
+     *  into the nickel, and finally finishes the current span.
+     *
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packInjectAndFinish(Tracer tracer, JsonArray data);
+
+    /** Packs a byte [], injects the distributed tracing context
+     *  into the nickel, and finally finishes the current span.
+     *
+     * @param tracer the tracer holding the context
+     * @param data the data to pack into the nickel
+     * @return the updated nickel
+     */
+    Nickel packInjectAndFinish(Tracer tracer, byte [] data);
+
     JsonObject toJson();
 
 
