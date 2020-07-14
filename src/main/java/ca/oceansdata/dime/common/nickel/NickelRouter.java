@@ -134,11 +134,19 @@ public class NickelRouter implements Handler<Message> {
                 function.apply(nickel, Nickel.nickelForA(nickel)).onSuccess(
                         nickelback->Nickel.publish(eb, address, nickelback)
                 ).onFailure(
-                        err->Nickel.publish(eb, address,
-                                Nickel.badNickel(nickel).pack(
-                                        new JsonObject()
-                                        .put("error", err.getMessage())
-                                ))
+                        err->{
+                            log.error("[Nickel Router] [{}] [{}] [{}] [{}] {}",
+                                    nickel.type().name(),
+                                    address,
+                                    nickel.correlationId().toString(),
+                                    nickel.orcid(),
+                                    err.getMessage());
+                            Nickel.publish(eb, address,
+                                    Nickel.badNickel(nickel).pack(
+                                            new JsonObject()
+                                                    .put("error", err.getMessage())
+                                    ));
+                        }
                 );
                 return;
             }
