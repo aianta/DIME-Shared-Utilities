@@ -204,28 +204,28 @@ public class NickelImpl implements Nickel {
     @Override
     public Nickel packAndInject(Tracer tracer, JsonObject data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
     public Nickel packAndInject(Tracer tracer, JsonArray data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
     public Nickel packAndInject(Tracer tracer, byte[] data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         return this;
     }
 
     @Override
     public Nickel packInjectAndFinish(Tracer tracer, JsonObject data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }
@@ -233,7 +233,7 @@ public class NickelImpl implements Nickel {
     @Override
     public Nickel packInjectAndFinish(Tracer tracer, JsonArray data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }
@@ -241,7 +241,7 @@ public class NickelImpl implements Nickel {
     @Override
     public Nickel packInjectAndFinish(Tracer tracer, byte[] data) {
         pack(data);
-        tracer.inject(tracer.activeSpan().context(), Format.Builtin.TEXT_MAP, this);
+        tracer.inject(tracer.scopeManager().activeSpan().context(), Format.Builtin.TEXT_MAP, this);
         tracer.activeSpan().finish();
         return this;
     }

@@ -141,6 +141,7 @@ public class NickelRouter implements Handler<Message> {
                                     nickel.correlationId().toString(),
                                     nickel.orcid(),
                                     err.getMessage());
+                            err.printStackTrace();
                             Nickel.publish(eb, address,
                                     Nickel.badNickel(nickel).pack(
                                             new JsonObject()
