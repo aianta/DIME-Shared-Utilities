@@ -319,6 +319,8 @@ public interface Nickel extends TextMap {
 
     JsonObject httpResponseHeaders();
 
+    Nickel setHttpResponseHeaders(JsonObject json);
+
     JsonObject requestQueryParams();
 
     Nickel setRequestQueryParams(JsonObject params);

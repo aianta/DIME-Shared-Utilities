@@ -162,8 +162,9 @@ public class NickelImpl implements Nickel {
         return this;
     }
 
-    public void setHttpResponseHeaders(JsonObject httpResponseHeaders) {
+    public Nickel setHttpResponseHeaders(JsonObject httpResponseHeaders) {
         this.httpResponseHeaders = httpResponseHeaders;
+        return this;
     }
 
 
