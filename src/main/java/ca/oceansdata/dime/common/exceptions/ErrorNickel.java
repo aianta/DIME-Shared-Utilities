@@ -108,6 +108,11 @@ public class ErrorNickel extends Exception implements Nickel {
     }
 
     @Override
+    public Nickel setHttpResponseHeaders(JsonObject json) {
+        return source.setHttpResponseHeaders(json);
+    }
+
+    @Override
     public JsonObject requestQueryParams() {
         return source.requestQueryParams();
     }
