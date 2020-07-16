@@ -128,6 +128,8 @@ public interface Nickel extends TextMap {
                 .addHeader("correlationId", nickel.correlationId().toString())
                 .addHeader("type", nickel.type().name());
 
+        options = NickelUtils.appendMetaToHeaders(options, nickel);
+
         //Send the nickel!
         eb.publish(address, nickel, options);
     }
@@ -199,11 +201,6 @@ public interface Nickel extends TextMap {
 
         //Unregister the consumer after a nickel is received.
         consumerPromise.future().onComplete(done->consumer.unregister());
-
-        //Create message headers required to capture response nickel
-        DeliveryOptions options = new DeliveryOptions()
-                .addHeader("correlationId", nickel.correlationId().toString())
-                .addHeader("type", nickel.type().name());
 
         //Send the nickel!
         publish(eb, address, nickel);
