@@ -1,6 +1,8 @@
 package ca.oceansdata.dime.common.nickel;
 
 import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 public class NickelUtils {
 
@@ -16,6 +18,16 @@ public class NickelUtils {
             if(e.getValue() instanceof String) options.addHeader(e.getKey(), (String)e.getValue());
             if(e.getValue() instanceof Integer) options.addHeader(e.getKey(), Integer.toString((Integer)e.getValue()));
             if(e.getValue() instanceof Double) options.addHeader(e.getKey(), Double.toString((Double)e.getValue()));
+            /** Ignore json entities.
+             *  <p>
+             *      <b>WHY:</b> Duplicating nickel metadata like this is a questionable design choice as is.
+             *      We want to keep it to simple fields, rather than support it's expansion into deep copying
+             *      json in event bus msg headers.
+             *  </p>
+             */
+            if(e.getValue() instanceof JsonObject) return;
+            if(e.getValue() instanceof JsonArray) return;
+
         });
         return options;
     }
