@@ -25,6 +25,7 @@ public enum NickelType {
     SAVE,
     ACTIVE,
     NEW_DOCUMENT,
+    ANNOUNCE,
     // Client-Bound Nickels
     ERROR,
     TIMEOUT,
