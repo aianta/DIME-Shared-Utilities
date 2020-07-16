@@ -115,6 +115,15 @@ public class NickelRouter implements Handler<Message> {
         //Extract the nickel from the event bus message
         Nickel nickel = (Nickel)event.body();
 
+        //Log handled nickels
+        log.info("[Nickel Router] [{}] [{}] [{}] [{}] [{}]",
+                nickel.type().name(),
+                address,
+                nickel.correlationId().toString(),
+                nickel.orcid(),
+                nickel.origin().name()
+        );
+
         //Prevent functions from being applied on either RESPONSE or ERROR nickels
         if(!(nickel.type().equals(NickelType.RESPONSE) ||
         nickel.type().equals(NickelType.ERROR)))
