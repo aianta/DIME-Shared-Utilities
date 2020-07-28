@@ -21,7 +21,7 @@ public class NickelUtils {
             /** Ignore json entities.
              *  <p>
              *      <b>WHY:</b> Duplicating nickel metadata like this is a questionable design choice as is.
-             *      We want to keep it to simple fields, rather than support it's expansion into deep copying
+             *      We want to keep it to simple fields, rather than support its expansion into deep copying
              *      json in event bus msg headers.
              *  </p>
              */
