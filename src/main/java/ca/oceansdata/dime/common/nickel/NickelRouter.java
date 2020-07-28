@@ -114,6 +114,7 @@ public class NickelRouter implements Handler<Message> {
     public void handle(Message event) {
         //Extract the nickel from the event bus message
         if(event.body() instanceof JsonObject) log.info(((JsonObject)event.body()).encodePrettily());
+        if(event.body() instanceof String) log.info((String)event.body());
         Nickel nickel = (Nickel)event.body();
 
         //Log handled nickels
