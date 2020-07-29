@@ -26,6 +26,8 @@ public enum NickelType {
     ACTIVE,
     NEW_DOCUMENT,
     ANNOUNCE,
+    CREATE_TASK,
+    CREATE_TASKS,
     // Client-Bound Nickels
     ERROR,
     TIMEOUT,
