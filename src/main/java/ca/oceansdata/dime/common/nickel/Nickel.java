@@ -1,5 +1,6 @@
 package ca.oceansdata.dime.common.nickel;
 
+import ca.oceansdata.dime.common.event.Event;
 import ca.oceansdata.dime.common.exceptions.ErrorNickel;
 import ca.oceansdata.dime.common.exceptions.UnpackException;
 import ca.oceansdata.dime.common.nickel.impl.NickelImpl;
@@ -78,6 +79,14 @@ public interface Nickel extends TextMap {
         return result;
     }
 
+    static Nickel create(Event event){
+        Nickel result = Nickel.create()
+                .setOrcid(event.getEventTarget())
+                .setType(NickelType.POST)
+                .pack(event.toJson());
+        return result;
+    }
+
     /** Get a response nickel from a nickel
      *
      * @param src the nickel to produce a response from
@@ -113,7 +122,6 @@ public interface Nickel extends TextMap {
         result.setStatusCode(500); //Default error status code
         return result;
     }
-
 
     /** Publish a nickel on a given event bus to a given address.
      *
