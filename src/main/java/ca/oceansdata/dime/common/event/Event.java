@@ -2,7 +2,6 @@ package ca.oceansdata.dime.common.event;
 
 import ca.oceansdata.dime.common.event.types.*;
 import io.vertx.codegen.annotations.DataObject;
-import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.ext.sql.SQLConnection;
 import org.slf4j.Logger;
@@ -16,7 +15,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 
-@DataObject
+/**@Author Alexandru Ianta
+ * An event is a metadata entity that describes some action that has been performed on the DIME system.
+ *
+ */
 public class Event {
 
     private static final Logger log = LoggerFactory.getLogger(Event.class);
@@ -25,8 +27,6 @@ public class Event {
     private Date timestamp;
     private String eventTarget; //ORCID of the user who should see this event
     private EventType type;
-    private EventStatus status = EventStatus.UNREAD;
-    private Date readTimestamp;
     protected JsonObject data = new JsonObject();
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us"));
@@ -85,23 +85,6 @@ public class Event {
         }
         this.type = EventType.getType(data.getString("type"));
 
-        if(!data.containsKey("status")){
-            throw new IllegalEventFormatException(data, "status", "key missing");
-        }
-        this.status = EventStatus.valueOf(data.getString("status"));
-
-        //Parse read timestamp if it exists
-        if(data.containsKey("readTimestamp")){
-            try{
-                Date readDate = dateFormat.parse(data.getString("readTimestamp"));
-                this.readTimestamp = readDate;
-            }catch (ParseException pe){
-                log.error("Error parsing read timestamp from JSON object:\n{}", data.encodePrettily());
-                log.error(pe.getMessage());
-                pe.printStackTrace();
-                throw new IllegalEventFormatException(data, "readTimestamp", "wrong format");
-            }
-        }
 
         this.data = data.getJsonObject("data");
 
@@ -114,12 +97,7 @@ public class Event {
                 .put("timestamp", getTimestamp().toString())
                 .put("eventTarget", getEventTarget())
                 .put("type", getType().getText())
-                .put("status", getStatus().getText())
                 .put("data", data);
-
-        if(getReadTimestamp() != null){
-            result.put("readTimestamp", getReadTimestamp().toString());
-        }
 
         return result;
     }
@@ -136,17 +114,6 @@ public class Event {
 
         event.setEventTarget(data.getString("EVENT_TARGET"));
         event.setType(EventType.getType(data.getString("EVENT_TYPE")));
-
-        //If this event has been read
-        if(data.getLong("READ_TIMESTAMP") != null)
-        {
-            Date readDate = new Date();
-            readDate.setTime(data.getLong("READ_TIMESTAMP"));
-            event.setReadTimestamp(readDate);
-        }
-
-
-        event.setStatus(EventStatus.valueOf(data.getString("EVENT_STATUS")));
 
         JsonObject json = new JsonObject(data.getString("DATA"));
         event.setData(json);
@@ -205,8 +172,6 @@ public class Event {
                 "TIMESTAMP INTEGER NOT NULL," +
                 "EVENT_TARGET TEXT NOT NULL," +
                 "EVENT_TYPE TEXT NOT NULL," +
-                "READ_TIMESTAMP INTEGER," +
-                "EVENT_STATUS TEXT NOT NULL," +
                 "DATA TEXT" +
                 ");";
 
@@ -257,28 +222,12 @@ public class Event {
         this.type = type;
     }
 
-    public Date getReadTimestamp() {
-        return readTimestamp;
-    }
-
-    public void setReadTimestamp(Date readTimestamp) {
-        this.readTimestamp = readTimestamp;
-    }
-
     public JsonObject getData() {
         return data;
     }
 
     public void setData(JsonObject data) {
         this.data = data;
-    }
-
-    public EventStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EventStatus status) {
-        this.status = status;
     }
 
 }
