@@ -1,6 +1,5 @@
 package ca.oceansdata.dime.common.event;
 
-import ca.oceansdata.dime.common.DimeUtils;
 import ca.oceansdata.dime.common.event.types.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.eventbus.EventBus;
@@ -78,7 +77,7 @@ public class EventService {
                     return new CommunityMatchResultEvent(json);
 
                 case "Profile Field Update":
-                    return new ProfileFieldUpdateEvent(json);
+                    return new ProfileUpdateEvent(json);
 
                 case "Download DIME Tools for Windows":
                     return new DownloadDimeToolsForWindowsEvent(json);

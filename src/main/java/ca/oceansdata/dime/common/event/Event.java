@@ -1,7 +1,6 @@
 package ca.oceansdata.dime.common.event;
 
 import ca.oceansdata.dime.common.event.types.*;
-import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.ext.sql.SQLConnection;
 import org.slf4j.Logger;
@@ -144,7 +143,7 @@ public class Event {
                 case COMMUNITY_MATCH_RESULT:
                     return new CommunityMatchResultEvent(event.toJson());
                 case PROFILE_FIELD_UPDATE:
-                    return new ProfileFieldUpdateEvent(event.toJson());
+                    return new ProfileUpdateEvent(event.toJson());
                 case DOWNLOAD_DIME_TOOLS_FOR_WINDOWS:
                     return new DownloadDimeToolsForWindowsEvent(event.toJson());
                 case EDIT_SCHEMA_NAME:
