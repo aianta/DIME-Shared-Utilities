@@ -112,80 +112,86 @@ public class NickelRouter implements Handler<Message> {
     }
 
     public void handle(Message event) {
-        //Extract the nickel from the event bus message
-        if(event.body() instanceof JsonObject) log.info(((JsonObject)event.body()).encodePrettily());
-        if(event.body() instanceof String) log.info((String)event.body());
-        Nickel nickel = (Nickel)event.body();
+        try{
+            //Extract the nickel from the event bus message
+            if(event.body() instanceof JsonObject) log.info("Received this JsonObject instead of nickel: {}",((JsonObject)event.body()).encodePrettily());
+            if(event.body() instanceof String) log.info("Received this String instead of nickel: {}",(String)event.body());
+            Nickel nickel = (Nickel)event.body();
 
-        //Log handled nickels
-        log.info("[Nickel Router] [{}] [{}] [{}] [{}] [{}]",
-                nickel.type().name(),
-                address,
-                nickel.correlationId().toString(),
-                nickel.orcid(),
-                nickel.origin().name()
-        );
+            //Log handled nickels
+            log.info("[Nickel Router] [{}] [{}] [{}] [{}] [{}]",
+                    nickel.type().name(),
+                    address,
+                    nickel.correlationId().toString(),
+                    nickel.orcid(),
+                    nickel.origin().name()
+            );
 
-        //Prevent functions from being applied on either RESPONSE or ERROR nickels
-        if(!(nickel.type().equals(NickelType.RESPONSE) ||
-        nickel.type().equals(NickelType.ERROR)))
-        {
-            /* Get the nickel function for this type of nickel.
-             * If no type function exists, use the global function if one exists.
+            //Prevent functions from being applied on either RESPONSE or ERROR nickels
+            if(!(nickel.type().equals(NickelType.RESPONSE) ||
+                    nickel.type().equals(NickelType.ERROR)))
+            {
+                /* Get the nickel function for this type of nickel.
+                 * If no type function exists, use the global function if one exists.
+                 */
+                NickelFunction function =
+                        functionMap.get(nickel.type()) != null?
+                                functionMap.get(nickel.type()):
+                                globalFunction;
+
+                /* If an appropriate function has been found, apply it to the incoming nickel,
+                 * then publish its result on the eventbus.
+                 */
+                if(function != null){
+                    function.apply(nickel, Nickel.nickelForA(nickel)).onSuccess(
+                            nickelback->Nickel.publish(eb, address, nickelback)
+                    ).onFailure(
+                            err->{
+                                log.error("[Nickel Router] [{}] [{}] [{}] [{}] {}",
+                                        nickel.type().name(),
+                                        address,
+                                        nickel.correlationId().toString(),
+                                        nickel.orcid(),
+                                        err.getMessage());
+                                err.printStackTrace();
+                                Nickel.publish(eb, address,
+                                        Nickel.badNickel(nickel).pack(
+                                                new JsonObject()
+                                                        .put("error", err.getMessage())
+                                        ));
+                            }
+                    );
+                    return;
+                }
+            }
+
+
+            /* At this stage, no functions were to be executed on the nickel
+             * attempt to handle the nickel by finding an appropriate action.
              */
-            NickelFunction function =
-                    functionMap.get(nickel.type()) != null?
-                            functionMap.get(nickel.type()):
-                            globalFunction;
 
-            /* If an appropriate function has been found, apply it to the incoming nickel,
-             * then publish its result on the eventbus.
+            /* Get the handler for this type of nickel.
+             * If no type handler exists, use the global handler if one exists.
              */
-            if(function != null){
-                function.apply(nickel, Nickel.nickelForA(nickel)).onSuccess(
-                        nickelback->Nickel.publish(eb, address, nickelback)
-                ).onFailure(
-                        err->{
-                            log.error("[Nickel Router] [{}] [{}] [{}] [{}] {}",
-                                    nickel.type().name(),
-                                    address,
-                                    nickel.correlationId().toString(),
-                                    nickel.orcid(),
-                                    err.getMessage());
-                            err.printStackTrace();
-                            Nickel.publish(eb, address,
-                                    Nickel.badNickel(nickel).pack(
-                                            new JsonObject()
-                                                    .put("error", err.getMessage())
-                                    ));
-                        }
-                );
+            NickelHandler handler =
+                    actionMap.get(nickel.type()) != null?
+                            actionMap.get(nickel.type()):
+                            globalHandler;
+
+            // If an appropriate handler has been found, pass it the incoming nickel.
+            if(handler != null){
+                handler.handle(nickel);
                 return;
             }
-        }
 
+            // No function or handler for this nickel, increment swallow counter to aide debugging
+            NICKLES_SWALLOWED++;
+            return;
 
-        /* At this stage, no functions were to be executed on the nickel
-         * attempt to handle the nickel by finding an appropriate action.
-         */
-
-        /* Get the handler for this type of nickel.
-         * If no type handler exists, use the global handler if one exists.
-         */
-        NickelHandler handler =
-                actionMap.get(nickel.type()) != null?
-                actionMap.get(nickel.type()):
-                globalHandler;
-
-        // If an appropriate handler has been found, pass it the incoming nickel.
-        if(handler != null){
-            handler.handle(nickel);
+        }catch (ClassCastException castException){
+            log.error("Couldn't cast message as nickel! Returning!", castException);
             return;
         }
-
-        // No function or handler for this nickel, increment swallow counter to aide debugging
-        NICKLES_SWALLOWED++;
-        return;
     }
 
     /** Clean up all functions and handlers,
