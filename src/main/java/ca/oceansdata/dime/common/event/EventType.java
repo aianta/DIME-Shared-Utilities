@@ -16,7 +16,7 @@ public enum EventType {
     COMMUNITY_TASK_SKIP ("Community Task Skip"),
     COMMUNITY_TASK_FEEDBACK ("Community Task Feedback"),
     COMMUNITY_MATCH_RESULT ("Community Match Result"),
-    PROFILE_FIELD_UPDATE ("Profile Update"),
+    PROFILE_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
     EDIT_SCHEMA_NAME("Edit Dataset Name"),
     EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description");
@@ -34,7 +34,7 @@ public enum EventType {
         typeMap.put(COMMUNITY_TASK_SKIP.getText(), COMMUNITY_TASK_SKIP);
         typeMap.put(COMMUNITY_TASK_FEEDBACK.getText(), COMMUNITY_TASK_FEEDBACK);
         typeMap.put(COMMUNITY_MATCH_RESULT.getText(), COMMUNITY_MATCH_RESULT);
-        typeMap.put(PROFILE_FIELD_UPDATE.getText(), PROFILE_FIELD_UPDATE);
+        typeMap.put(PROFILE_UPDATE.getText(), PROFILE_UPDATE);
         typeMap.put(DOWNLOAD_DIME_TOOLS_FOR_WINDOWS.getText(), DOWNLOAD_DIME_TOOLS_FOR_WINDOWS);
         typeMap.put(EDIT_SCHEMA_NAME.getText(), EDIT_SCHEMA_NAME);
         typeMap.put(EDIT_SCHEMA_DESCRIPTION.getText(), EDIT_SCHEMA_DESCRIPTION);

@@ -18,7 +18,7 @@ public class ProfileUpdateEvent extends Event {
      * @param newValue the updated value of the field
      */
     public ProfileUpdateEvent( JsonObject oldValue, JsonObject newValue){
-        super(EventType.PROFILE_FIELD_UPDATE);
+        super(EventType.PROFILE_UPDATE);
 
         this.oldValue = oldValue;
         this.newValue = newValue;
@@ -30,7 +30,7 @@ public class ProfileUpdateEvent extends Event {
     }
 
     public ProfileUpdateEvent(){
-        super(EventType.PROFILE_FIELD_UPDATE);
+        super(EventType.PROFILE_UPDATE);
     }
 
     public ProfileUpdateEvent(JsonObject data) throws IllegalEventFormatException {

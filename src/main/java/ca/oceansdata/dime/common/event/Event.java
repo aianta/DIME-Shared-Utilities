@@ -142,7 +142,7 @@ public class Event {
                     return new CommunityTaskFeedbackEvent(event.toJson());
                 case COMMUNITY_MATCH_RESULT:
                     return new CommunityMatchResultEvent(event.toJson());
-                case PROFILE_FIELD_UPDATE:
+                case PROFILE_UPDATE:
                     return new ProfileUpdateEvent(event.toJson());
                 case DOWNLOAD_DIME_TOOLS_FOR_WINDOWS:
                     return new DownloadDimeToolsForWindowsEvent(event.toJson());
