@@ -89,7 +89,7 @@ public class EventService {
                     return new EditSchemaDescriptionEvent(json);
 
                 case "Updated Metadata Field":
-                    return new UpdateMetadataField(json);
+                    return new UpdateMetadataFieldEvent(json);
 
                 default:
                     log.error("No such event type!");

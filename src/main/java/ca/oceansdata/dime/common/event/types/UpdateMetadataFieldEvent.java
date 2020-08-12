@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonObject;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UpdateMetadataField extends Event {
+public class UpdateMetadataFieldEvent extends Event {
 
     UUID entityId;
     UUID fieldId;
@@ -16,7 +16,7 @@ public class UpdateMetadataField extends Event {
     UUID oldValueId;
     UUID newValueId;
 
-    public UpdateMetadataField(
+    public UpdateMetadataFieldEvent(
             UUID entityId,
             UUID fieldId,
             UUID keyId,
@@ -31,11 +31,11 @@ public class UpdateMetadataField extends Event {
         this.newValueId = newValueId;
     }
 
-    public UpdateMetadataField(){
+    public UpdateMetadataFieldEvent(){
         super(EventType.UPDATE_METADATA_FIELD);
     }
 
-    public UpdateMetadataField(JsonObject data) throws IllegalEventFormatException {
+    public UpdateMetadataFieldEvent(JsonObject data) throws IllegalEventFormatException {
         super(data);
 
         Optional<JsonObject> eventData = Optional.of(data.getJsonObject("data"));
