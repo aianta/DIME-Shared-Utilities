@@ -40,6 +40,7 @@ public enum EventType {
         typeMap.put(EDIT_SCHEMA_NAME.getText(), EDIT_SCHEMA_NAME);
         typeMap.put(EDIT_SCHEMA_DESCRIPTION.getText(), EDIT_SCHEMA_DESCRIPTION);
         typeMap.put(COMMUNITY_TASK_CREATED.getText(),COMMUNITY_TASK_CREATED);
+        typeMap.put(UPDATE_METADATA_FIELD.getText(), UPDATE_METADATA_FIELD);
     }
 
     private String text;
