@@ -16,7 +16,7 @@ public enum EventType {
     COMMUNITY_TASK_SKIP ("Community Task Skip"),
     COMMUNITY_TASK_FEEDBACK ("Community Task Feedback"),
     COMMUNITY_MATCH_RESULT ("Community Match Result"),
-    PROFILE_FIELD_UPDATE ("Profile Field Update"),
+    PROFILE_FIELD_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
     EDIT_SCHEMA_NAME("Edit Dataset Name"),
     EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description");

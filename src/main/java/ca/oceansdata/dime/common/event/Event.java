@@ -155,7 +155,7 @@ public class Event {
             }
 
         }catch (IllegalEventFormatException iefe){
-            log.error("Error prasing event from database");
+            log.error("Error parsing event from database");
             log.error(iefe.getMessage());
             iefe.printStackTrace();
         }
