@@ -29,6 +29,14 @@ public class UpdateMetadataFieldEvent extends Event {
         this.keyId = keyId;
         this.oldValueId = oldValueId;
         this.newValueId = newValueId;
+
+        JsonObject data = new JsonObject()
+                .put("entityId", entityId.toString())
+                .put("fieldId", fieldId.toString())
+                .put("keyId", keyId.toString())
+                .put("oldValueId", oldValueId.toString())
+                .put("newValueId", newValueId.toString());
+        this.setData(data);
     }
 
     public UpdateMetadataFieldEvent(){
