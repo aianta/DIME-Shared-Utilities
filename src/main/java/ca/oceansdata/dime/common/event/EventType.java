@@ -19,7 +19,8 @@ public enum EventType {
     PROFILE_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
     EDIT_SCHEMA_NAME("Edit Dataset Name"),
-    EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description");
+    EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description"),
+    UPDATE_METADATA_FIELD("Updated Metadata Field");
 
     public static Map<String,EventType> typeMap;
     static {

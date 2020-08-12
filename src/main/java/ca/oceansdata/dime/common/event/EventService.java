@@ -76,7 +76,7 @@ public class EventService {
                 case "Community Match Result":
                     return new CommunityMatchResultEvent(json);
 
-                case "Profile Field Update":
+                case "Profile Update":
                     return new ProfileUpdateEvent(json);
 
                 case "Download DIME Tools for Windows":
@@ -87,6 +87,9 @@ public class EventService {
 
                 case "Edit Dataset Description":
                     return new EditSchemaDescriptionEvent(json);
+
+                case "Updated Metadata Field":
+                    return new UpdateMetadataField(json);
 
                 default:
                     log.error("No such event type!");
