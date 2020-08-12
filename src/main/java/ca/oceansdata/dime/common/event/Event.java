@@ -150,6 +150,8 @@ public class Event {
                     return new EditSchemaNameEvent(event.toJson());
                 case EDIT_SCHEMA_DESCRIPTION:
                     return new EditSchemaDescriptionEvent(event.toJson());
+                case UPDATE_METADATA_FIELD:
+                    return new UpdateMetadataFieldEvent(event.toJson());
                 default:
                     log.error("No such event.");
             }
