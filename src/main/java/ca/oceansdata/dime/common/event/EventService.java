@@ -82,12 +82,6 @@ public class EventService {
                 case "Download DIME Tools for Windows":
                     return new DownloadDimeToolsForWindowsEvent(json);
 
-                case "Edit Dataset Name":
-                    return new EditSchemaNameEvent(json);
-
-                case "Edit Dataset Description":
-                    return new EditSchemaDescriptionEvent(json);
-
                 case "Updated Metadata Field":
                     return new UpdateMetadataFieldEvent(json);
 

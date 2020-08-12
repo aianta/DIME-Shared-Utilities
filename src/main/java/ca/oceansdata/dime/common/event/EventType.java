@@ -18,8 +18,6 @@ public enum EventType {
     COMMUNITY_MATCH_RESULT ("Community Match Result"),
     PROFILE_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
-    EDIT_SCHEMA_NAME("Edit Dataset Name"),
-    EDIT_SCHEMA_DESCRIPTION("Edit Dataset Description"),
     UPDATE_METADATA_FIELD("Updated Metadata Field");
 
     public static Map<String,EventType> typeMap;
@@ -37,8 +35,6 @@ public enum EventType {
         typeMap.put(COMMUNITY_MATCH_RESULT.getText(), COMMUNITY_MATCH_RESULT);
         typeMap.put(PROFILE_UPDATE.getText(), PROFILE_UPDATE);
         typeMap.put(DOWNLOAD_DIME_TOOLS_FOR_WINDOWS.getText(), DOWNLOAD_DIME_TOOLS_FOR_WINDOWS);
-        typeMap.put(EDIT_SCHEMA_NAME.getText(), EDIT_SCHEMA_NAME);
-        typeMap.put(EDIT_SCHEMA_DESCRIPTION.getText(), EDIT_SCHEMA_DESCRIPTION);
         typeMap.put(COMMUNITY_TASK_CREATED.getText(),COMMUNITY_TASK_CREATED);
         typeMap.put(UPDATE_METADATA_FIELD.getText(), UPDATE_METADATA_FIELD);
     }

@@ -146,10 +146,6 @@ public class Event {
                     return new ProfileUpdateEvent(event.toJson());
                 case DOWNLOAD_DIME_TOOLS_FOR_WINDOWS:
                     return new DownloadDimeToolsForWindowsEvent(event.toJson());
-                case EDIT_SCHEMA_NAME:
-                    return new EditSchemaNameEvent(event.toJson());
-                case EDIT_SCHEMA_DESCRIPTION:
-                    return new EditSchemaDescriptionEvent(event.toJson());
                 case UPDATE_METADATA_FIELD:
                     return new UpdateMetadataFieldEvent(event.toJson());
                 default:
