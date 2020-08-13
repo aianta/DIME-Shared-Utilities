@@ -80,6 +80,7 @@ public interface Nickel extends TextMap {
     }
 
     static Nickel create(Event event){
+        log.info("Creating nickel for {} with target: {} ",event.getType().name(), event.getEventTarget());
         Nickel result = Nickel.create()
                 .setOrcid(event.getEventTarget())
                 .setType(NickelType.POST)
