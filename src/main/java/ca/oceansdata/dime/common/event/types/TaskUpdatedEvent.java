@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonObject;
 import java.util.UUID;
 
 public class TaskUpdatedEvent extends TaskEvent {
-    public TaskUpdatedEvent(UUID taskId) throws IllegalEventFormatException {
+    public TaskUpdatedEvent(UUID taskId) {
         super(taskId, EventType.TASK_UPDATED);
     }
 

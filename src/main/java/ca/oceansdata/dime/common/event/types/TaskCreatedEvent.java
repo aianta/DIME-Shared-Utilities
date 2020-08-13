@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class TaskCreatedEvent extends TaskEvent {
 
-    public TaskCreatedEvent(UUID taskId) throws IllegalEventFormatException {
+    public TaskCreatedEvent(UUID taskId){
         super(taskId, EventType.TASK_CREATED);
     }
 

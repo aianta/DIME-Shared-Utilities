@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject;
 import java.util.UUID;
 
 public class TaskSkippedEvent extends TaskEvent {
-    public TaskSkippedEvent(UUID taskId) throws IllegalEventFormatException {
+    public TaskSkippedEvent(UUID taskId) {
         super(taskId, EventType.TASK_SKIPPED);
     }
 

@@ -12,7 +12,7 @@ public abstract class TaskEvent extends Event {
 
     UUID taskId;
 
-    public TaskEvent(UUID taskId, EventType type) throws IllegalEventFormatException {
+    public TaskEvent(UUID taskId, EventType type) {
         super(type);
         this.taskId = taskId;
 
