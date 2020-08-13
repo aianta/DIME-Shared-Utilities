@@ -11,10 +11,7 @@ public enum EventType {
     ATTRIBUTE_MAPPING("Attribute Mapping"),
     DOWNLOAD_INTEGRATED_FILE ("Download Integrated File"),
     DOWNLOAD_ORIGINAL_FILE ("Download Original File"),
-    COMMUNITY_TASK_CREATED ("Community Task Created"),
     COMMUNITY_TASK_MATCH ("Community Task Match"),
-    COMMUNITY_TASK_SKIP ("Community Task Skip"),
-    COMMUNITY_TASK_FEEDBACK ("Community Task Feedback"),
     COMMUNITY_MATCH_RESULT ("Community Match Result"),
     PROFILE_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
@@ -34,13 +31,14 @@ public enum EventType {
         typeMap.put(DOWNLOAD_INTEGRATED_FILE.getText(), DOWNLOAD_INTEGRATED_FILE);
         typeMap.put(DOWNLOAD_ORIGINAL_FILE.getText(), DOWNLOAD_ORIGINAL_FILE);
         typeMap.put(COMMUNITY_TASK_MATCH.getText(), COMMUNITY_TASK_MATCH);
-        typeMap.put(COMMUNITY_TASK_SKIP.getText(), COMMUNITY_TASK_SKIP);
-        typeMap.put(COMMUNITY_TASK_FEEDBACK.getText(), COMMUNITY_TASK_FEEDBACK);
         typeMap.put(COMMUNITY_MATCH_RESULT.getText(), COMMUNITY_MATCH_RESULT);
         typeMap.put(PROFILE_UPDATE.getText(), PROFILE_UPDATE);
         typeMap.put(DOWNLOAD_DIME_TOOLS_FOR_WINDOWS.getText(), DOWNLOAD_DIME_TOOLS_FOR_WINDOWS);
-        typeMap.put(COMMUNITY_TASK_CREATED.getText(),COMMUNITY_TASK_CREATED);
         typeMap.put(UPDATE_METADATA_FIELD.getText(), UPDATE_METADATA_FIELD);
+        typeMap.put(TASK_DISMISSED.getText(), TASK_DISMISSED);
+        typeMap.put(TASK_CREATED.getText(), TASK_CREATED);
+        typeMap.put(TASK_UPDATED.getText(), TASK_UPDATED);
+        typeMap.put(TASK_SKIPPED.getText(), TASK_SKIPPED);
     }
 
     private String text;

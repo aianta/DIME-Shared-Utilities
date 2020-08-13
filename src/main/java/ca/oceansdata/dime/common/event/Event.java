@@ -132,14 +132,8 @@ public class Event {
                     return new DownloadIntegratedFileEvent(event.toJson());
                 case DOWNLOAD_ORIGINAL_FILE:
                     return new DownloadOriginalFileEvent(event.toJson());
-                case COMMUNITY_TASK_CREATED:
-                    return new CommunityTaskCreatedEvent(event.toJson());
                 case COMMUNITY_TASK_MATCH:
                     return new CommunityTaskMatchEvent(event.toJson());
-                case COMMUNITY_TASK_SKIP:
-                    return new CommunityTaskSkipEvent(event.toJson());
-                case COMMUNITY_TASK_FEEDBACK:
-                    return new CommunityTaskFeedbackEvent(event.toJson());
                 case COMMUNITY_MATCH_RESULT:
                     return new CommunityMatchResultEvent(event.toJson());
                 case PROFILE_UPDATE:
@@ -148,6 +142,14 @@ public class Event {
                     return new DownloadDimeToolsForWindowsEvent(event.toJson());
                 case UPDATE_METADATA_FIELD:
                     return new UpdateMetadataFieldEvent(event.toJson());
+                case TASK_CREATED:
+                    return new TaskCreatedEvent(event.toJson());
+                case TASK_SKIPPED:
+                    return new TaskSkippedEvent(event.toJson());
+                case TASK_UPDATED:
+                    return new TaskUpdatedEvent(event.toJson());
+                case TASK_DISMISSED:
+                    return new TaskDismissedEvent(event.toJson());
                 default:
                     log.error("No such event.");
             }

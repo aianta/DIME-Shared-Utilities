@@ -7,6 +7,7 @@ import io.vertx.reactivex.core.eventbus.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class EventService {
 
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
@@ -61,17 +62,10 @@ public class EventService {
                 case "Download Original File":
                     return new DownloadOriginalFileEvent(json);
 
-                case "Community Task Created":
-                    return new CommunityTaskCreatedEvent(json);
 
                 case "Community Task Match":
                     return new CommunityTaskMatchEvent(json);
 
-                case "Community Task Skip":
-                    return new CommunityTaskSkipEvent(json);
-
-                case "Community Task Feedback":
-                    return new CommunityTaskFeedbackEvent(json);
 
                 case "Community Match Result":
                     return new CommunityMatchResultEvent(json);
