@@ -21,16 +21,20 @@ public class CommunityMatchResultEvent extends Event{
     private static final Logger log = LoggerFactory.getLogger(CommunityMatchResultEvent.class);
 
     UUID amtId;
+    UUID camgId;
 
     /**Convenience constructor
-     * @param amtId Id if the Attribute Match Task the was completed to trigger this event
+     * @param amtId Id of the Attribute Match Task the was completed to trigger this event
+     * @param camgId Id of the Community Attribute Matching Goal that as a new match
      */
-    public CommunityMatchResultEvent(UUID amtId){
+    public CommunityMatchResultEvent(UUID amtId, UUID camgId){
         super(EventType.COMMUNITY_MATCH_RESULT);
         this.amtId = amtId;
+        this.camgId = camgId;
 
         JsonObject data = new JsonObject()
-                .put("amtId", amtId.toString());
+                .put("amtId", amtId.toString())
+                .put("camgId", camgId.toString());
 
         this.setData(data);
     }
@@ -54,14 +58,28 @@ public class CommunityMatchResultEvent extends Event{
         }
         this.amtId = UUID.fromString(inner.getString("amtId"));
 
+        if(!inner.containsKey("camgId")){
+            throw new IllegalEventFormatException(data, "data->camgId", "key missing");
+        }
+        this.camgId = UUID.fromString(inner.getString("camgId"));
+
     }
 
     public UUID getAmtId() {
         return amtId;
     }
 
-    public void setAmtId(UUID taskId) {
-        this.amtId = taskId;
-        data.mergeIn(new JsonObject().put("amtId", taskId.toString()));
+    public void setAmtId(UUID amtId) {
+        this.amtId = amtId;
+        data.mergeIn(new JsonObject().put("amtId", amtId.toString()));
+    }
+
+    public UUID getCamgId() {
+        return camgId;
+    }
+
+    public void setCamgId(UUID camgId) {
+        this.camgId = camgId;
+        data.mergeIn(new JsonObject().put("camgId", camgId.toString()));
     }
 }
