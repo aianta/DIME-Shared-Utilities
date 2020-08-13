@@ -8,6 +8,11 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.UUID;
 
+/** An event triggered when an AMT is completed for the user completing the AMT.
+ *
+ *  "You matched an attribute for a community member!"
+ *
+ */
 @DataObject
 public class CommunityTaskMatchEvent extends Event {
 

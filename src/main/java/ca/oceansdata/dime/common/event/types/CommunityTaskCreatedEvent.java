@@ -8,6 +8,9 @@ import io.vertx.core.json.JsonObject;
 
 import java.util.UUID;
 
+/** An event triggered when a CAMG is created.
+ *
+ */
 @DataObject
 public class CommunityTaskCreatedEvent extends Event {
 

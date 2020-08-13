@@ -18,7 +18,11 @@ public enum EventType {
     COMMUNITY_MATCH_RESULT ("Community Match Result"),
     PROFILE_UPDATE ("Profile Update"),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
-    UPDATE_METADATA_FIELD("Updated Metadata Field");
+    UPDATE_METADATA_FIELD("Updated Metadata Field"),
+    TASK_DISMISSED("Task Dismissed"),
+    TASK_SKIPPED("Task Skipped"),
+    TASK_UPDATED("Task Updated"),
+    TASK_CREATED("Task Created");
 
     public static Map<String,EventType> typeMap;
     static {
