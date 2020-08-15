@@ -10,6 +10,7 @@ import io.opentracing.propagation.TextMap;
 import io.vertx.core.eventbus.DeliveryOptions;
 
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.core.CompositeFuture;
@@ -242,18 +243,25 @@ public interface Nickel extends TextMap {
 
 
     static <T> T unpack(Nickel nickel, Class<T> tClass) throws UnpackException {
-        switch (tClass.getSimpleName()){
-            case "JsonObject":
-                String jsonStr = new String(nickel.getData());
-                JsonObject contentJson = new JsonObject(jsonStr);
-                return (T)contentJson;
-            case "JsonArray":
-                String jsonArrayStr = new String(nickel.getData());
-                JsonArray contentJsonArray = new JsonArray(jsonArrayStr);
-                return (T)contentJsonArray;
-            default:
-                throw new UnpackException(nickel, tClass);
+        try{
+            switch (tClass.getSimpleName()){
+                case "JsonObject":
+                    String jsonStr = new String(nickel.getData());
+                    JsonObject contentJson = new JsonObject(jsonStr);
+                    return (T)contentJson;
+                case "JsonArray":
+                    String jsonArrayStr = new String(nickel.getData());
+                    JsonArray contentJsonArray = new JsonArray(jsonArrayStr);
+                    return (T)contentJsonArray;
+                default:
+                    throw new UnpackException(nickel, tClass);
+            }
+        }catch (DecodeException decodeException){
+            log.error(decodeException.getMessage(), decodeException);
+            log.error("Throwing unpack exception!");
+            throw new UnpackException(nickel, tClass);
         }
+
     }
 
     Nickel setType(HttpMethod method);
