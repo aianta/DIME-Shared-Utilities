@@ -1,25 +1,25 @@
 package ca.oceansdata.dime.common.event;
 
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public enum EventType {
-    LOGIN("Login"),
-    LOGOUT("Logout"),
-    DOCUMENT_UPLOAD ("Document Upload"),
-    ATTRIBUTE_MAPPING("Attribute Mapping"),
-    DOWNLOAD_INTEGRATED_FILE ("Download Integrated File"),
-    DOWNLOAD_ORIGINAL_FILE ("Download Original File"),
-    COMMUNITY_TASK_MATCH ("Community Task Match"),
-    COMMUNITY_MATCH_RESULT ("Community Match Result"),
-    PROFILE_UPDATE ("Profile Update"),
-    DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows"),
-    UPDATE_METADATA_FIELD("Updated Metadata Field"),
-    TASK_DISMISSED("Task Dismissed"),
-    TASK_SKIPPED("Task Skipped"),
-    TASK_UPDATED("Task Updated"),
-    TASK_CREATED("Task Created");
+    LOGIN("Login", false),
+    LOGOUT("Logout", false),
+    DOCUMENT_UPLOAD ("Document Upload", true),
+    ATTRIBUTE_MAPPING("Attribute Mapping", true),
+    DOWNLOAD_INTEGRATED_FILE ("Download Integrated File", true),
+    DOWNLOAD_ORIGINAL_FILE ("Download Original File",false),
+    COMMUNITY_TASK_MATCH ("Community Task Match",false),
+    COMMUNITY_MATCH_RESULT ("Community Match Result", true),
+    PROFILE_UPDATE ("Profile Update", true),
+    DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows", false),
+    UPDATE_METADATA_FIELD("Updated Metadata Field", true),
+    TASK_DISMISSED("Task Dismissed",false),
+    TASK_SKIPPED("Task Skipped", false),
+    TASK_UPDATED("Task Updated", true),
+    TASK_CREATED("Task Created", true);
 
     public static Map<String,EventType> typeMap;
     static {
@@ -42,9 +42,11 @@ public enum EventType {
     }
 
     private String text;
+    private boolean userVisible;
 
-    private EventType(String text){
+    EventType(String text, boolean userVisible){
         this.text = text;
+        this.userVisible = userVisible;
     }
 
     public String getText(){
@@ -56,5 +58,9 @@ public enum EventType {
             throw new RuntimeException(String.format("There is no event type for (%s)", text));
         }
         return typeMap.get(text);
+    }
+
+    public boolean isUserVisible(){
+        return userVisible;
     }
 }
