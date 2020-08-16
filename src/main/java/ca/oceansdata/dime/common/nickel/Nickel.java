@@ -211,7 +211,7 @@ public interface Nickel extends TextMap {
         });
 
         //Unregister the consumer after a nickel is received.
-        consumerPromise.future().onComplete(done->consumer.unregister());
+        consumerPromise.future().onComplete(done->log.info("Got response from: {}", address)).onComplete(done->consumer.unregister());
 
         //Send the nickel!
         publish(eb, address, nickel);
