@@ -158,6 +158,7 @@ public interface Nickel extends TextMap {
         while (it.hasNext()){
             Map.Entry<String,List<Nickel>> entry = it.next();
             for(Nickel n: entry.getValue()){
+                log.info("Sent batch request to {}", entry.getKey());
                 nickelFutures.add(send(eb, entry.getKey(), n));
             }
         }
