@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  */
 public class NickelBatch implements Iterable<Map.Entry<String,List<Nickel>>> {
 
-    private Map<String, List<Nickel>> batch = new HashMap<>();
+    private Map<String, List<Nickel>> batch = new LinkedHashMap<>();
 
     /** Add a nickel to the batch
      *

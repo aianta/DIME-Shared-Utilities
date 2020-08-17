@@ -165,6 +165,7 @@ public interface Nickel extends TextMap {
 
         return CompositeFuture.all(nickelFutures);
     }
+    
 
     /** Send a nickel and get a future for an associated response nickel.
      *
