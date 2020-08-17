@@ -7,19 +7,19 @@ import java.util.Map;
 public enum EventType {
     LOGIN("Login", false),
     LOGOUT("Logout", false),
-    DOCUMENT_UPLOAD ("Document Upload", true),
-    ATTRIBUTE_MAPPING("Attribute Mapping", true),
-    DOWNLOAD_INTEGRATED_FILE ("Download Integrated File", true),
+    DOCUMENT_UPLOAD ("Document Upload", false),
+    ATTRIBUTE_MAPPING("Attribute Mapping", false),
+    DOWNLOAD_INTEGRATED_FILE ("Download Integrated File", false),
     DOWNLOAD_ORIGINAL_FILE ("Download Original File",false),
     COMMUNITY_TASK_MATCH ("Community Task Match",false),
     COMMUNITY_MATCH_RESULT ("Community Match Result", true),
-    PROFILE_UPDATE ("Profile Update", true),
+    PROFILE_UPDATE ("Profile Update", false),
     DOWNLOAD_DIME_TOOLS_FOR_WINDOWS ("Download DIME Tools for Windows", false),
-    UPDATE_METADATA_FIELD("Updated Metadata Field", true),
+    UPDATE_METADATA_FIELD("Updated Metadata Field", false),
     TASK_DISMISSED("Task Dismissed",false),
     TASK_SKIPPED("Task Skipped", false),
-    TASK_UPDATED("Task Updated", true),
-    TASK_CREATED("Task Created", true);
+    TASK_UPDATED("Task Updated", false),
+    TASK_CREATED("Task Created", false);
 
     public static Map<String,EventType> typeMap;
     static {
@@ -40,6 +40,7 @@ public enum EventType {
         typeMap.put(TASK_UPDATED.getText(), TASK_UPDATED);
         typeMap.put(TASK_SKIPPED.getText(), TASK_SKIPPED);
     }
+
 
     private String text;
     private boolean userVisible;
