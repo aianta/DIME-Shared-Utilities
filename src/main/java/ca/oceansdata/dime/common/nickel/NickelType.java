@@ -23,7 +23,6 @@ public enum NickelType {
     UPDATE,
     SCHEMA_CREATED,
     SAVE,
-    NOTIFICATIONS,
     ACTIVE,
     NEW_DOCUMENT,
     ANNOUNCE,

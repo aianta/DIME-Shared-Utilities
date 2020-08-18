@@ -34,8 +34,10 @@ public class UpdateMetadataFieldEvent extends Event {
                 .put("entityId", entityId.toString())
                 .put("fieldId", fieldId.toString())
                 .put("keyId", keyId.toString())
-                .put("oldValueId", oldValueId.toString())
                 .put("newValueId", newValueId.toString());
+        if(oldValueId != null){
+            data.put("oldValueId", oldValueId.toString());
+        }
         this.setData(data);
     }
 
@@ -55,14 +57,17 @@ public class UpdateMetadataFieldEvent extends Event {
                     Optional<UUID> oldValueId = Optional.of(UUID.fromString(inner.getString("oldValueId")));
                     Optional<UUID> newValueId = Optional.of(UUID.fromString(inner.getString("newValueId")));
 
-                    entityId.flatMap(eId->fieldId.flatMap(fId->keyId.flatMap(kId->oldValueId.flatMap(ovId->newValueId.flatMap(nvId->{
+                    if(oldValueId.isPresent()){
+                        this.oldValueId = oldValueId.get();
+                    }
+
+                    entityId.flatMap(eId->fieldId.flatMap(fId->keyId.flatMap(kId->newValueId.flatMap(nvId->{
                         this.entityId = eId;
                         this.keyId = kId;
                         this.fieldId = fId;
-                        this.oldValueId = ovId;
                         this.newValueId = nvId;
                         return Optional.empty();
-                    })))));
+                    }))));
                     return Optional.empty();
                 }
         );
@@ -101,7 +106,9 @@ public class UpdateMetadataFieldEvent extends Event {
 
     public void setOldValueId(UUID oldValueId) {
         this.oldValueId = oldValueId;
-        data.mergeIn(new JsonObject().put("oldValueId", oldValueId.toString()));
+        if(oldValueId != null){
+            data.mergeIn(new JsonObject().put("oldValueId", oldValueId.toString()));
+        }
     }
 
     public UUID getNewValueId() {
