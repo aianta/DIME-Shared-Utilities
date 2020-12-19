@@ -183,6 +183,17 @@ public class ErrorNickel extends Exception implements Nickel {
     }
 
     @Override
+    public Nickel inject(Tracer tracer, Scope scope) {
+        return source.inject(tracer, scope);
+    }
+
+    @Override
+    public Nickel injectAndFinish(Tracer tracer, Scope scope) {
+        return source.injectAndFinish(tracer, scope);
+    }
+
+
+    @Override
     public JsonObject toJson() {
         return source.toJson();
     }

@@ -202,6 +202,17 @@ public class NickelImpl implements Nickel {
         return tracer.activateSpan(span);
     }
 
+    public Nickel inject(Tracer tracer, Scope scope){
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
+        return this;
+    }
+
+    public Nickel injectAndFinish(Tracer tracer, Scope scope){
+        tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, this);
+        scope.span().finish();
+        return this;
+    }
+
     @Override
     public Nickel packAndInject(Tracer tracer, Scope scope, JsonObject data) {
         pack(data);

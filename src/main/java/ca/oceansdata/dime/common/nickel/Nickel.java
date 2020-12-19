@@ -408,6 +408,22 @@ public interface Nickel extends TextMap {
      */
     Nickel packInjectAndFinish(Tracer tracer,Scope scope, byte [] data);
 
+    /** Inject the given scope using the given tracer into the Nickel
+     *
+     * @param tracer tracer to inject scope with
+     * @param scope scope to inject
+     * @return the updated nickel
+     */
+    Nickel inject(Tracer tracer,Scope scope);
+
+    /** Inject the given scope using the given tracer into the Nickel.
+     *  Then finish the scope and return the Nickel.
+     * @param tracer tracer to inject scope with
+     * @param scope scope to inject
+     * @return the updated nickel
+     */
+    Nickel injectAndFinish(Tracer tracer, Scope scope);
+
     JsonObject toJson();
 
 
