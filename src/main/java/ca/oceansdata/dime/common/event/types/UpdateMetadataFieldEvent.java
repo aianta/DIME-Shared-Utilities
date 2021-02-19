@@ -51,15 +51,17 @@ public class UpdateMetadataFieldEvent extends Event {
         Optional<JsonObject> eventData = Optional.of(data.getJsonObject("data"));
         eventData.flatMap(
                 inner->{
+
+                    //TODO - this was silly in retrospect, if a useful learning exercise on Optionals. Should refactor as it Null Pointers in UUID.fromString() if inner is missing any of the keys.
+
                     Optional<UUID> entityId = Optional.of(UUID.fromString(inner.getString("entityId")));
                     Optional<UUID> fieldId = Optional.of(UUID.fromString(inner.getString("fieldId")));
                     Optional<UUID> keyId = Optional.of(UUID.fromString(inner.getString("keyId")));
-                    Optional<UUID> oldValueId = Optional.of(UUID.fromString(inner.getString("oldValueId")));
                     Optional<UUID> newValueId = Optional.of(UUID.fromString(inner.getString("newValueId")));
 
-                    if(oldValueId.isPresent()){
-                        this.oldValueId = oldValueId.get();
-                    }
+
+                    this.oldValueId = inner.containsKey("oldValueId")?UUID.fromString(inner.getString("oldValueId")):null;
+
 
                     entityId.flatMap(eId->fieldId.flatMap(fId->keyId.flatMap(kId->newValueId.flatMap(nvId->{
                         this.entityId = eId;
