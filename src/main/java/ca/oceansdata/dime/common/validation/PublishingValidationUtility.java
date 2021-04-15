@@ -17,8 +17,8 @@ public class PublishingValidationUtility {
      * @param fields metadata fields to check
      * @return true if the fields are sufficient to publish to figshare
      */
-    private boolean isFigsharePublishReady(JsonArray fields) throws MissingMetadataFields {
-        
+    public static boolean isFigsharePublishReady(JsonArray fields) throws MissingMetadataFields {
+
 
             log.info("Checking fields!");
 
