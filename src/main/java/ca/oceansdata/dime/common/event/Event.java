@@ -150,6 +150,10 @@ public class Event {
                     return new TaskUpdatedEvent(event.toJson());
                 case TASK_DISMISSED:
                     return new TaskDismissedEvent(event.toJson());
+                case LINK_EXTERNAL_ACCOUNT:
+                    return new LinkExternalAccountEvent(event.toJson());
+                case PUBLISH:
+                    return new PublishEvent(event.toJson());
                 default:
                     log.error("No such event.");
             }

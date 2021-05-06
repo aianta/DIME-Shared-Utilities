@@ -19,7 +19,9 @@ public enum EventType {
     TASK_DISMISSED("Task Dismissed",false),
     TASK_SKIPPED("Task Skipped", false),
     TASK_UPDATED("Task Updated", false),
-    TASK_CREATED("Task Created", false);
+    TASK_CREATED("Task Created", false),
+    LINK_EXTERNAL_ACCOUNT("Linked External Account", false),
+    PUBLISH("Published Entity", false);
 
     public static Map<String,EventType> typeMap;
     static {
@@ -39,6 +41,8 @@ public enum EventType {
         typeMap.put(TASK_CREATED.getText(), TASK_CREATED);
         typeMap.put(TASK_UPDATED.getText(), TASK_UPDATED);
         typeMap.put(TASK_SKIPPED.getText(), TASK_SKIPPED);
+        typeMap.put(LINK_EXTERNAL_ACCOUNT.getText(), LINK_EXTERNAL_ACCOUNT);
+        typeMap.put(PUBLISH.getText(), PUBLISH);
     }
 
 
