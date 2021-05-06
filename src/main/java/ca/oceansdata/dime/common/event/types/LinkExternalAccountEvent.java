@@ -23,8 +23,13 @@ public class LinkExternalAccountEvent extends Event {
     public LinkExternalAccountEvent(JsonObject data) throws IllegalEventFormatException{
         super(data);
 
+        if(!data.containsKey("data")){
+            throw new IllegalEventFormatException(data, "data", "key missing");
+        }
+        data = data.getJsonObject("data");
+
         if(!data.containsKey("accountType")){
-            throw new IllegalEventFormatException(data, "accountType", "key missing");
+            throw new IllegalEventFormatException(data, "data->accountType", "key missing");
         }
         this.accountType = data.getString("accountType");
     }

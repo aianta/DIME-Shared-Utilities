@@ -32,6 +32,11 @@ public class PublishEvent extends Event {
     public PublishEvent(JsonObject data) throws IllegalEventFormatException{
         super(data);
 
+        if(!data.containsKey("data")){
+            throw new IllegalEventFormatException(data, "data", "key missing");
+        }
+        data = data.getJsonObject("data");
+
         if(!data.containsKey("entityId")){
             throw new IllegalEventFormatException(data, "entityId", "key missing");
         }
