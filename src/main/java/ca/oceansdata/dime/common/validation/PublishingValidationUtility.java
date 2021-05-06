@@ -11,6 +11,85 @@ import org.slf4j.LoggerFactory;
 public class PublishingValidationUtility {
     private static final Logger log = LoggerFactory.getLogger(PublishingValidationUtility.class);
 
+    /** Verifies that the fields provided are sufficient to publish a dataset on dataverse. If they're not
+     *  throws a missing metadata fields exception.
+     *
+     * @param fields
+     * @return
+     * @throws MissingMetadataFields
+     */
+    public static boolean isDataversePublishReady(JsonArray fields) throws MissingMetadataFields{
+
+        log.info("Checking metadata fields for dataverse publishing.");
+
+        boolean hasTitle = false;
+        boolean hasAuthor = false;
+        boolean hasContact = false;
+        boolean hasSubject = false;
+        boolean hasDescription = false;
+
+        for(Object o: fields){
+            JsonObject json = (JsonObject)o;
+            JsonObject key = json.getJsonObject("key");
+            JsonObject keyParent = key.getJsonObject("parent");
+            JsonObject value = json.getJsonObject("value");
+
+            if(keyParent != null && keyParent.getString("name").equals("Dataverse Minimum Required")){
+                switch (key.getString("name")){
+                    case "title":
+                        hasTitle = value != null;
+                        break;
+                    case "dsDescriptionValue":
+                        hasDescription = value != null;
+                        break;
+                    case "subject":
+                        hasSubject = value != null;
+                        break;
+                    case "authorName":
+                        hasAuthor = value != null;
+                        break;
+                    case "datasetContactEmail":
+                        hasContact = value != null;
+                        break;
+                }
+
+
+            }
+        }
+
+        if(hasTitle && hasAuthor && hasContact && hasDescription && hasSubject){
+            log.info("Document is ready to publish to dataverse!");
+            return true;
+        }else{
+            log.info("Document not ready to publish to dataverse!");
+
+            //Assemble list of missing metadata fields
+            JsonArray missingFields = new JsonArray();
+
+            if(!hasTitle){
+                missingFields.add("title");
+            }
+
+            if(!hasAuthor){
+                missingFields.add("authorName");
+            }
+
+            if(!hasSubject){
+                missingFields.add("subject");
+            }
+
+            if(!hasContact){
+                missingFields.add("datasetContactEmail");
+            }
+
+            if(!hasDescription){
+                missingFields.add("dsDescriptionValue");
+            }
+
+            throw new MissingMetadataFields(missingFields);
+        }
+
+    }
 
     /** Verifies that the fields provided are sufficient to publish an article on figshare.
      *  If they are not throws a missing metadata fields exception.
@@ -34,6 +113,7 @@ public class PublishingValidationUtility {
                 JsonObject json = (JsonObject) o;
                 JsonObject key = json.getJsonObject("key");
                 JsonObject keyParent = key.getJsonObject("parent");
+                JsonObject value = json.getJsonObject("value");
 
                 log.info("inspecting: {}", json.encodePrettily());
 
@@ -42,25 +122,25 @@ public class PublishingValidationUtility {
 
                     switch (key.getString("name")){
                         case "Title":
-                            hasTitle = true;
+                            hasTitle = value != null;
                             break;
                         case "Authors":
-                            hasAuthors = true;
+                            hasAuthors = value != null;
                             break;
                         case "Categories":
-                            hasCategories = true;
+                            hasCategories = value != null;
                             break;
                         case "Item Type":
-                            hasItemType = true;
+                            hasItemType = value != null;
                             break;
                         case "Keywords":
-                            hasKeywords = true;
+                            hasKeywords = value != null;
                             break;
                         case "Description":
-                            hasDescription = true;
+                            hasDescription = value != null;
                             break;
                         case "License":
-                            hasLicense = true;
+                            hasLicense = value != null;
                             break;
                     }
                 }
