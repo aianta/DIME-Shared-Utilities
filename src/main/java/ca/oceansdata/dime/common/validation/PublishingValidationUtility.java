@@ -115,8 +115,6 @@ public class PublishingValidationUtility {
                 JsonObject keyParent = key.getJsonObject("parent");
                 JsonObject value = json.getJsonObject("value");
 
-                log.info("inspecting: {}", json.encodePrettily());
-
                 //TODO - change this to check for uuids once we have persistence for metadata fields
                 if(keyParent != null && keyParent.getString("name").equals("Figshare Publish")){
 
